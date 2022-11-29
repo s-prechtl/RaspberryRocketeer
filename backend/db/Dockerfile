@@ -1,4 +1,3 @@
-FROM postgres:15
+FROM postgres:15-alpine
 
-RUN mkdir /docker-entrypoint-initdb.d
-COPY createSchema.sql /docker-entrypoint-initdb.d
+COPY createSchema.sql /docker-entrypoint-initdb.d/createSchema.sql
