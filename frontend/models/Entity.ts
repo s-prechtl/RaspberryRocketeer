@@ -35,7 +35,7 @@ abstract class Entity {
         this._fill = fill;
     }
 
-    public abstract update();
+    public abstract update(): void;
     public draw() {
         fill(this._fill);
         rect(this.position.x, this.position.y, this.width, this.height);

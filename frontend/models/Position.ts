@@ -17,4 +17,9 @@ class Position {
     set y(value: number) {
         this._y = value;
     }
+
+    constructor(x: number, y: number) {
+        this._x = x;
+        this._y = y;
+    }
 }
