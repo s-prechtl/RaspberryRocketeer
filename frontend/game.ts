@@ -3,3 +3,11 @@ function setup() {
     background(187)
     line(0,0, 400,400)
 }
+
+function draw() {
+
+}
+
+function keyPressed() {
+    
+}
