@@ -27,7 +27,7 @@ CREATE VIEW lb_highscore AS (
     SELECT username, max(score) AS highscore FROM game GROUP BY username ORDER BY highscore DESC
 );
 
-CREATE VIEW lb_highscore AS (
+CREATE VIEW lb_total_score AS (
     SELECT username, sum(score) AS total_score FROM game GROUP BY username ORDER BY total_score DESC
 );
 
