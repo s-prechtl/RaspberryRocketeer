@@ -1,7 +1,20 @@
 class Raspberry extends Entity{
     private lift: number = -10;
     private gravity: number = 1;
-    private velocity: number = 0;
+    private _velocity: number = 0;
+    private static maxVelocity = 5;
+
+    constructor() {
+        super(new Position(2*width/6, height/2), 10, 10, 0);
+    }
+
+    get velocity(): number {
+        return this._velocity;
+    }
+
+    set velocity(value: number) {
+        this._velocity = (this.velocity > Raspberry.maxVelocity) ? Raspberry.maxVelocity : value;
+    }
 
     update() {
         this.applyGravity();
