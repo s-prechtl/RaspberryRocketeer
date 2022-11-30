@@ -24,17 +24,9 @@ CREATE VIEW user_data AS (
 );
 
 CREATE VIEW lb_highscore AS (
-    SELECT username, max(score) AS highscore FROM game GROUP BY username ORDER BY highscore DESC
-);
-
-CREATE VIEW lb_total_score AS (
-    SELECT username, sum(score) AS total_score FROM game GROUP BY username ORDER BY total_score DESC
+    SELECT row_number() OVER (ORDER BY max(score) DESC) AS rank, username, max(score) AS highscore FROM game GROUP BY username ORDER BY rank
 );
 
 CREATE VIEW lb_total_playtime AS (
-    SELECT username, sum(playtime) AS total_playtime FROM game GROUP BY username ORDER BY total_playtime DESC
-);
-
-CREATE VIEW lb_average_score AS (
-    SELECT username, avg(score) AS average_score FROM game GROUP BY username ORDER BY average_score DESC
+    SELECT row_number() OVER (ORDER BY sum(playtime) DESC) AS rank, username, sum(playtime) AS total_playtime FROM game GROUP BY username ORDER BY rank
 );
