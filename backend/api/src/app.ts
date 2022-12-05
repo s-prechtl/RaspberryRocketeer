@@ -10,13 +10,13 @@ const port = 3000
 
 app.use(helmet())
 
-// init database connection
-const pgp = pgPromise({});
-const db = pgp('postgres://postgres:postgres@localhost:5432/rr')
-
 // configure & use logger
 let morganFormatted = morgan('[:date[iso]] :method :url - :status')
 app.use(morganFormatted);
+
+// init database connection
+const pgp = pgPromise({});
+const db = pgp('postgres://postgres:postgres@localhost:5432/rr')
 
 
 app.get('/highscore', async (req, res) => {
@@ -27,5 +27,5 @@ app.get('/highscore', async (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    morganFormatted.log(`Server started at http://localhost:3000`);
 })
