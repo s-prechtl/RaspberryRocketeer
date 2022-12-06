@@ -1,9 +1,9 @@
 const pipeImagePath: string = "resources/raspberry-low-res.png";
 const obstacleWidth: number = 42;
 let obstacleOffset: number;
-
 const backgroundImagePath: string = "resources/raspberry-low-res.png";
 let backgroundImage: any;
+const raspberryImagePath: string = "resources/raspberry-rocket.png";
 
 let obstacles: Obstacle[] = [];
 let raspberry: Raspberry;
@@ -15,6 +15,7 @@ function setup() {
     obstacleOffset = width / 4;
 
     raspberry = new Raspberry();
+    raspberry.image = raspberryImagePath;
 
     obstacles.push(new Obstacle(
         new Pipe(width, obstacleWidth, height),

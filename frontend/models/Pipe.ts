@@ -2,7 +2,7 @@ class Pipe extends Entity {
     private _image: any;
 
     //region Getter & Setter
-    get image() {
+    get image(): any {
         return this._image;
     }
 
