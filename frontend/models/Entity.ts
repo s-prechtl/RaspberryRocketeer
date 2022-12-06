@@ -4,6 +4,7 @@ abstract class Entity {
     private _height: number;
     private _fill: number;
 
+    //region Getter & Setter
     get position(): Position {
         return this._position;
     }
@@ -27,6 +28,7 @@ abstract class Entity {
     set height(value: number) {
         this._height = value;
     }
+    //endregion
 
     constructor(position: Position, width: number, height: number, fill: number) {
         this.position = position;
@@ -36,6 +38,7 @@ abstract class Entity {
     }
 
     public abstract update(): void;
+
     public draw() {
         fill(this._fill);
         rect(this.position.x, this.position.y, this.width, this.height);
