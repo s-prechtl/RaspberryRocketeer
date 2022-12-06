@@ -21,7 +21,7 @@ class Obstacle extends Entity {
         Obstacle.startX = width;
     }
 
-    public resetPosition() {
+    public resetPosition(): void {
         this.pipeBottom.position.y = this.distanceBetweenPipes + this.randomRange(0, height - this.padding - 1.2 * this.distanceBetweenPipes);
         this.pipeBottom.position.x = Obstacle.startX;
 
@@ -29,16 +29,16 @@ class Obstacle extends Entity {
         this.pipeTop.position.x = Obstacle.startX;
     }
 
-    private randomRange(min: number, max: number) {
+    private randomRange(min: number, max: number): number {
         return Math.random() * (max - min) + min;
     }
 
-    public update() {
+    public update(): void {
         this.pipeTop.position.x -= this.speed;
         this.pipeBottom.position.x -= this.speed;
     }
 
-    public draw() {
+    public draw(): void {
         fill(10, 200, 100); //TODO do not make static
         rect(
             this.pipeTop.position.x,

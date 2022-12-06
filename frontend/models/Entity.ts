@@ -2,7 +2,7 @@ abstract class Entity {
     private _position: Position;
     private _width: number;
     private _height: number;
-    private _fill: number;
+    private fill: number;
 
     //region Getter & Setter
     get position(): Position {
@@ -34,13 +34,13 @@ abstract class Entity {
         this.position = position;
         this.width = width;
         this.height = height;
-        this._fill = fill;
+        this.fill = fill;
     }
 
     public abstract update(): void;
 
-    public draw() {
-        fill(this._fill);
+    public draw(): void {
+        fill(this.fill);
         rect(this.position.x, this.position.y, this.width, this.height);
     }
 }

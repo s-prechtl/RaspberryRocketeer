@@ -1,13 +1,14 @@
-class Raspberry extends Entity{
+class Raspberry extends Entity {
     private lift: number = -10;
     private gravity: number = 1;
     private _velocity: number = 0;
-    private static maxVelocity = 5;
+    private static maxVelocity: number = 5;
 
     constructor() {
-        super(new Position(2*width/6, height/2), 10, 10, 0);
+        super(new Position(2 * width / 6, height / 2), 10, 10, 0);
     }
 
+    //region Getter & Setter
     get velocity(): number {
         return this._velocity;
     }
@@ -16,18 +17,20 @@ class Raspberry extends Entity{
         this._velocity = (this.velocity > Raspberry.maxVelocity) ? Raspberry.maxVelocity : value;
     }
 
-    update() {
+    //endregion
+
+    public update(): void {
         this.applyGravity();
         this.forceBoundaries();
     }
 
-    private applyGravity() {
+    private applyGravity(): void {
         if (this.position.y - this.height > 0) {
             this.velocity += this.gravity;
         }
     }
 
-    private forceBoundaries() {
+    private forceBoundaries(): void {
         if (this.position.y > height) {
             this.position.y = height;
             this.velocity = 0;
@@ -39,7 +42,7 @@ class Raspberry extends Entity{
         }
     }
 
-    public boost() {
+    public boost(): void {
         this.velocity += this.lift;
     }
 }

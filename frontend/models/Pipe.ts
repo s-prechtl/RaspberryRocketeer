@@ -3,6 +3,6 @@ class Pipe extends Entity {
         super(position, width, height, 0);
     }
 
-    update(): void {
+    public update(): void {
     }
 }

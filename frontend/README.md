@@ -2,32 +2,47 @@
 classDiagram
 Entity <|-- Raspberry
 Entity <|-- Obstacle
-Entity: -Position position
-Entity: -int width
-Entity: -int height
-Entity: -update()
-Entity: -draw()
+Entity <|-- Pipe
+Entity: -number fill
+Entity: +Position position
+Entity: +number width
+Entity: +number height
+Entity: +abstract update()
+Entity: +draw()
 Entity: -detectCollision(Entity other)
+
 class Raspberry{
--input()
+-number lift
+-number gravity
+-static number maxVelocity
++number velocity
+
+-applyGravity()
+-forceBoundaries()
 -boost()
++update()
 }
 
 class Obstacle{
 -Entity pipeTop
 -Entity pipeBottom
--int distanceBetweenPipes
--int padding
--resetPosition()
+-number distanceBetweenPipes
+-number padding
+-number speed
+-static number startX
+
+-randomRange()
++resetPosition()
++update()
++draw()
+}
+
+class Pipe {
++update()
 }
 
 class Position{
--int _x
--int _y
-
-+get x()
-+set x()
-+get y()
-+set y()
++int x
++int y
 }
 ```

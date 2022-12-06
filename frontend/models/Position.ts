@@ -2,6 +2,7 @@ class Position {
     private _x: number;
     private _y: number;
 
+    //region Getter & Setter
     get x(): number {
         return this._x;
     }
@@ -17,6 +18,7 @@ class Position {
     set y(value: number) {
         this._y = value;
     }
+    //endregion
 
     constructor(x: number, y: number) {
         this._x = x;
