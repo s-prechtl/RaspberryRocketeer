@@ -1,8 +1,31 @@
 class Pipe extends Entity {
-    constructor(position: Position, width: number, height: number) {
-        super(position, width, height, 0);
+    private _image: any;
+
+    //region Getter & Setter
+    get image() {
+        return this._image;
     }
 
-    public update(): void {
+    set image(path: string) {
+        this._image = loadImage(path);
+    }
+    //endregion
+
+    constructor(positionX: number, width: number, height: number) {
+        super(new Position(positionX, 0), width, height, 0);
+    }
+
+    public update(): void {}
+
+    public draw(): void {
+        // @ts-ignore
+        image(this.image, this.position.x, this.position.y, this.width, this.height);
+        noFill();
+        rect(
+            this.position.x,
+            this.position.y,
+            this.width,
+            this.height
+        );
     }
 }
