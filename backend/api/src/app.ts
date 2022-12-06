@@ -16,16 +16,29 @@ app.use(morganFormatted);
 
 // init database connection
 const pgp = pgPromise({});
-const db = pgp('postgres://postgres:postgres@localhost:5432/rr')
+const db = pgp('postgres://postgres:postgres@db:5432/rr')
 
-
-app.get('/highscore', async (req, res) => {
-    let data = await db.any(
-        'SELECT * FROM lb_highscore;'
-    )
-    res.send(data)
+app.get('/helloworld', (req, res) => {
+    res.json({message: "Hello World!"})
 })
 
+app.get('/highscore', async (req, res) => {
+    let data = await dbQueryCatcher(async () =>
+        await db.manyOrNone('SELECT * FROM lb_highscore;')
+    )
+    res.json(data)
+})
+
+async function dbQueryCatcher(request): Promise<any> {
+    let data;
+    try {
+        data = await request();
+    } catch (e) {
+        console.log((e as Error).message)
+    }
+    return data;
+}
+
 app.listen(port, () => {
-    morganFormatted.log(`Server started at http://localhost:3000`);
+    console.log(`Server started at http://localhost:3000`);
 })

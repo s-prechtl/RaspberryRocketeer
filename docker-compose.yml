@@ -5,11 +5,17 @@ services:
     build: backend/db
     container_name: postgres-db
     environment:
-      POSTGRES_DB: rr
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:5432"
     volumes:
       - ./backend/pgdata:/var/lib/postgresql/data
+
+  api:
+    build: backend/api
+    container_name: express-api
+    ports:
+      - "${EXPRESS_PORT}:3000"
 

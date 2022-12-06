@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-esm src/app.ts",
-    "prod": "tsc && node build/app.ts"
+    "prod": "tsc && node build/app.js"
   },
   "author": "jweissen",
   "license": "ISC",
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.14",
+    "@types/morgan": "^1.9.3",
     "@types/node": "^18.11.9"
   }
 }
