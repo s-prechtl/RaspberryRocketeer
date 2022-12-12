@@ -24,4 +24,18 @@ erDiagram
         int average_score
         int games_played
     }
+    
+    lb_highscore {
+        int rank
+        string username
+        int highscore
+    }
+    
+    lb_total_playtime {
+        int rank
+        string username
+        time total_playtime
+    }
 ```
+
+## API Endpoints
