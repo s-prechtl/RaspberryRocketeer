@@ -7,6 +7,7 @@ const raspberryImagePath: string = "resources/raspberry-rocket.png";
 
 let obstacles: Obstacle[] = [];
 let raspberry: Raspberry;
+let paused: boolean;
 
 function setup() {
     backgroundImage = loadImage(backgroundImagePath);
@@ -19,24 +20,30 @@ function setup() {
 
 function draw() {
     background(backgroundImage)
+    if (!paused) {
+        raspberry.update();
+    }
     raspberry.draw();
-    raspberry.update();
 
     obstacles.forEach((obstacle) => {
+        if (!paused) {
+            obstacle.update();
+            checkObstacleReset(obstacle);
+        }
 
         obstacle.draw();
-        obstacle.update();
-
-        checkObstacleReset(obstacle);
     });
-
-    if (obstacles[0].collides(raspberry)) {
-        setupGame();
+    if (!paused) {
+        if (obstacles[0].collides(raspberry)) {
+            setupGame();
+        }
+        obstacles[0].draw();
     }
-    obstacles[0].draw();
 }
 
 function setupGame() {
+    paused = true;
+
     raspberry = new Raspberry();
     raspberry.image = raspberryImagePath;
     raspberry.showHitbox = true;
@@ -76,5 +83,10 @@ function checkObstacleReset(obstacle: Obstacle) {
 function keyPressed() {
     if (key.toLowerCase() == "k") {
         raspberry.boost();
+    }
+    if (key == "Escape") {
+        paused = true;
+    } else if (paused) {
+        paused = false;
     }
 }
