@@ -1,9 +1,9 @@
 class Raspberry extends Entity {
-    private lift: number = -10;
-    private gravity: number = 1;
+    private readonly lift: number = -10;
+    private readonly gravity: number = 1;
     private _velocity: number = 0;
     private _image: any;
-    private static maxVelocity: number = 5;
+    private static readonly maxVelocity: number = 5;
 
     constructor() {
         super(new Position(width / 6, height / 2), 180, 70, 0);
@@ -17,7 +17,7 @@ class Raspberry extends Entity {
     set velocity(value: number) {
         this._velocity = (this.velocity > Raspberry.maxVelocity) ? Raspberry.maxVelocity : value;
     }
-    
+
     get image(): any {
         return this._image;
     }
@@ -34,9 +34,7 @@ class Raspberry extends Entity {
     }
 
     private applyGravity(): void {
-        if (this.position.y - this.height > 0) {
-            this.velocity += this.gravity;
-        }
+        this.velocity += this.gravity;
     }
 
     private forceBoundaries(): void {
@@ -54,7 +52,7 @@ class Raspberry extends Entity {
     public boost(): void {
         this.velocity += this.lift;
     }
-    
+
     public draw(): void {
         image(this.image, this.position.x, this.position.y, this.width, this.height);
         noFill();

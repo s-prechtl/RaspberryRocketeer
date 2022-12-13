@@ -18,7 +18,6 @@ class Pipe extends Entity {
     public update(): void {}
 
     public draw(): void {
-        // @ts-ignore
         image(this.image, this.position.x, this.position.y, this.width, this.height);
         noFill();
         rect(
