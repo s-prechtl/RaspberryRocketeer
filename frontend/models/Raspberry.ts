@@ -5,11 +5,9 @@ class Raspberry extends Entity {
     private _image: any;
     private static readonly maxVelocity: number = 5;
 
-    constructor() {
-        super(new Position(width / 6, height / 2), 180, 70, 0);
-    }
-
     //region Getter & Setter
+
+
     get velocity(): number {
         return this._velocity;
     }
@@ -27,6 +25,10 @@ class Raspberry extends Entity {
     }
 
 //endregion
+
+    constructor() {
+        super(new Position(width / 6, height / 2), 180, 70, 0);
+    }
 
     public update(): void {
         this.applyGravity();
