@@ -46,7 +46,6 @@ function setupGame() {
 
     raspberry = new Raspberry();
     raspberry.image = raspberryImagePath;
-    raspberry.showHitbox = true;
 
     obstacles = [];
     obstacles.push(new Obstacle(
