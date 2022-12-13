@@ -46,7 +46,6 @@ class Obstacle extends Entity implements Collidable{
     }
 
     public draw(): void {
-        noFill();
         this.pipeTop.draw();
         this.pipeBottom.draw();
     }

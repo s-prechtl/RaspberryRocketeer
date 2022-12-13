@@ -51,7 +51,9 @@ abstract class Entity {
     public abstract update(): void;
 
     public draw(): void {
+        push();
         fill(this.fill);
         rect(this.position.x, this.position.y, this.width, this.height);
+        pop();
     }
 }

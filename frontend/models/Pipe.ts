@@ -20,6 +20,7 @@ class Pipe extends Entity implements Collidable {
     }
 
     public draw(): void {
+        push();
         image(this.image, this.position.x, this.position.y, this.width, this.height);
         noFill();
         rect(
@@ -28,6 +29,7 @@ class Pipe extends Entity implements Collidable {
             this.width,
             this.height
         );
+        pop();
     }
 
     collides(o: Entity): boolean {
