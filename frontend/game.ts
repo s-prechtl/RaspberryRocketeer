@@ -43,15 +43,19 @@ function draw() {
     background(backgroundImage)
     raspberry.draw();
     raspberry.update();
-
+    
     obstacles.forEach((obstacle) => {
         obstacle.draw();
         obstacle.update();
 
-        if(obstacle.position.x < -obstacleWidth) {
-            obstacle.resetPosition(true);
-        }
+        checkObstacleReset(obstacle);
     });
+}
+
+function checkObstacleReset(obstacle: Obstacle){
+    if(obstacle.position.x < -obstacleWidth) {
+        obstacle.resetPosition(true);
+    }
 }
 
 //
