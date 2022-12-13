@@ -18,19 +18,22 @@ function setup() {
     raspberry.image = raspberryImagePath;
 
     obstacles.push(new Obstacle(
-        new Pipe(width, obstacleWidth, height),
-        new Pipe(width, obstacleWidth, height),
-        pipeImagePath
+        new Position(width, 0),
+        obstacleWidth,
+        height,
+        pipeImagePath,
     ));
     obstacles.push(new Obstacle(
-        new Pipe(width + obstacleOffset, obstacleWidth, height),
-        new Pipe(width + obstacleOffset, obstacleWidth, height),
-        pipeImagePath
+        new Position(width + obstacleOffset, 0),
+        obstacleWidth,
+        height,
+        pipeImagePath,
     ));
     obstacles.push(new Obstacle(
-        new Pipe(width + obstacleOffset * 2, obstacleWidth, height),
-        new Pipe(width + obstacleOffset * 2, obstacleWidth, height),
-        pipeImagePath
+        new Position(width + obstacleOffset * 2, 0),
+        obstacleWidth,
+        height,
+        pipeImagePath,
     ));
 
     obstacles.forEach((obstacle) => obstacle.resetPosition(false));
@@ -38,24 +41,20 @@ function setup() {
 
 function draw() {
     background(backgroundImage)
-    raspberry.update();
     raspberry.draw();
+    raspberry.update();
 
     obstacles.forEach((obstacle) => {
-        obstacle.update();
         obstacle.draw();
+        obstacle.update();
 
         if(obstacle.position.x < -obstacleWidth) {
             obstacle.resetPosition(true);
         }
-
-
     });
 }
 
-function keyPressed() {
-    if (key == "K" || key == "k") {
-        raspberry.boost();
-        console.log("BOOOST")
-    }
-}
+//
+// function keyPressed() {
+//
+// }
