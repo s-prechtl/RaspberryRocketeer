@@ -30,7 +30,7 @@ abstract class Entity {
     }
     //endregion
 
-    constructor(position: Position, width: number, height: number, fill: number) {
+    protected constructor(position: Position, width: number, height: number, fill: number) {
         this.position = position;
         this.width = width;
         this.height = height;

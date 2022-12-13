@@ -58,7 +58,9 @@ function checkObstacleReset(obstacle: Obstacle){
     }
 }
 
-//
-// function keyPressed() {
-//
-// }
+
+function keyPressed() {
+    if (key.toLowerCase() == "k") {
+        raspberry.boost();
+    }
+}

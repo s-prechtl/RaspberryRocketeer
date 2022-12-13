@@ -1,4 +1,4 @@
-class Obstacle extends Entity {
+class Obstacle extends Entity implements Collidable{
     private pipeTop: Pipe;
     private pipeBottom: Pipe;
     private readonly distanceBetweenPipes: number;
@@ -49,5 +49,9 @@ class Obstacle extends Entity {
         noFill();
         this.pipeTop.draw();
         this.pipeBottom.draw();
+    }
+
+    collides(o: Entity): boolean {
+        return this.pipeTop.collides(o) || this.pipeBottom.collides(o);
     }
 }
