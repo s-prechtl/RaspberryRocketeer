@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "module": "ES2020",
     "noImplicitAny": true,
     "outFile": "./build/build.js",
     "preserveConstEnums": true,
