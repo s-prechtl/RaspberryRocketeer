@@ -1,6 +1,6 @@
 CREATE TABLE "user" (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(32)
+    name VARCHAR(32) UNIQUE NOT NULL
 );
 
 CREATE TABLE user_scores (
