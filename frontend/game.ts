@@ -84,7 +84,7 @@ function keyPressed() {
         raspberry.boost();
     }
     if (key == "Escape") {
-        paused = true;
+        paused = !paused;
     } else if (paused) {
         paused = false;
     }
