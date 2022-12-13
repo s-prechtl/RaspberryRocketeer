@@ -14,10 +14,34 @@ function setup() {
     createCanvas(2000, 1000);
     obstacleOffset = width / 3;
 
+    setupGame();
+}
+
+function draw() {
+    background(backgroundImage)
+    raspberry.draw();
+    raspberry.update();
+
+    obstacles.forEach((obstacle) => {
+
+        obstacle.draw();
+        obstacle.update();
+
+        checkObstacleReset(obstacle);
+    });
+
+    if (obstacles[0].collides(raspberry)) {
+        setupGame();
+    }
+    obstacles[0].draw();
+}
+
+function setupGame() {
     raspberry = new Raspberry();
     raspberry.image = raspberryImagePath;
     raspberry.showHitbox = true;
 
+    obstacles = [];
     obstacles.push(new Obstacle(
         new Position(width, 0),
         obstacleWidth,
@@ -40,27 +64,8 @@ function setup() {
     obstacles.forEach((obstacle) => obstacle.resetPosition(false));
 }
 
-function draw() {
-    background(backgroundImage)
-    raspberry.draw();
-    raspberry.update();
-
-    obstacles.forEach((obstacle) => {
-
-        obstacle.draw();
-        obstacle.update();
-
-        checkObstacleReset(obstacle);
-    });
-
-    if (obstacles[0].collides(raspberry)) {
-        obstacles[0].draw();
-        console.log("SAMC")
-    }
-}
-
-function checkObstacleReset(obstacle: Obstacle){
-    if(obstacle.position.x < -obstacleWidth) {
+function checkObstacleReset(obstacle: Obstacle) {
+    if (obstacle.position.x < -obstacleWidth) {
         obstacle.resetPosition(true);
         obstacles.shift();
         obstacles.push(obstacle);
