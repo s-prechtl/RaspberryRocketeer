@@ -3,7 +3,7 @@ class Obstacle extends Entity {
     private pipeBottom: Pipe;
     private readonly distanceBetweenPipes: number;
     private readonly padding: number = 300;
-    private readonly speed: number = 8;
+    private readonly speed: number = 3;
 
     private static startX: number;
 

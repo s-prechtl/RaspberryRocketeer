@@ -12,7 +12,7 @@ function setup() {
     backgroundImage = loadImage(backgroundImagePath);
 
     createCanvas(1000, 1000);
-    obstacleOffset = width / 4;
+    obstacleOffset = width / 3;
 
     raspberry = new Raspberry();
     raspberry.image = raspberryImagePath;
@@ -32,31 +32,30 @@ function setup() {
         new Pipe(width + obstacleOffset * 2, obstacleWidth, height),
         pipeImagePath
     ));
-    obstacles.push(new Obstacle(
-        new Pipe(width + obstacleOffset * 3, obstacleWidth, height),
-        new Pipe(width + obstacleOffset * 3, obstacleWidth, height),
-        pipeImagePath
-    ));
 
     obstacles.forEach((obstacle) => obstacle.resetPosition(false));
 }
 
 function draw() {
     background(backgroundImage)
-    raspberry.draw();
     raspberry.update();
+    raspberry.draw();
 
     obstacles.forEach((obstacle) => {
-        obstacle.draw();
         obstacle.update();
+        obstacle.draw();
 
         if(obstacle.position.x < -obstacleWidth) {
             obstacle.resetPosition(true);
         }
+
+
     });
 }
 
-//
-// function keyPressed() {
-//
-// }
+function keyPressed() {
+    if (key == "K" || key == "k") {
+        raspberry.boost();
+        console.log("BOOOST")
+    }
+}
