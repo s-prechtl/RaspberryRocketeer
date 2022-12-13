@@ -18,7 +18,7 @@ class Obstacle extends Entity implements Collidable{
         this.pipeTop.image = pipeImagePath;
         this.pipeBottom.image = pipeImagePath;
 
-        this.distanceBetweenPipes = height / 4;
+        this.distanceBetweenPipes = height / 2.5;
         Obstacle.startX = width;
     }
 
@@ -51,7 +51,7 @@ class Obstacle extends Entity implements Collidable{
         this.pipeBottom.draw();
     }
 
-    collides(o: Entity): boolean {
+    public collides(o: Entity): boolean {
         return this.pipeTop.collides(o) || this.pipeBottom.collides(o);
     }
 }

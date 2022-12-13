@@ -31,9 +31,9 @@ class Pipe extends Entity implements Collidable {
     }
 
     collides(o: Entity): boolean {
-        return this.position.x < o.position.x + o.width && //inside left border
-            this.position.x + this.width > o.position.x && //but not outside right border
-            this.position.y < o.position.y + o.height && //inside top border
-            this.position.y + this.height > o.position.y; //but not outside bottom border
+        return this.position.x < (o.position.x + o.width) && //inside left border
+            (this.position.x + this.width) > o.position.x && //but not outside right border
+            this.position.y < (o.position.y + o.height) && //inside top border
+            (this.position.y + this.height) > o.position.y; //but not outside bottom border
     }
 }

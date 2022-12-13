@@ -11,11 +11,12 @@ let raspberry: Raspberry;
 function setup() {
     backgroundImage = loadImage(backgroundImagePath);
 
-    createCanvas(1000, 1000);
+    createCanvas(2000, 1000);
     obstacleOffset = width / 3;
 
     raspberry = new Raspberry();
     raspberry.image = raspberryImagePath;
+    raspberry.showHitbox = true;
 
     obstacles.push(new Obstacle(
         new Position(width, 0),
@@ -43,18 +44,26 @@ function draw() {
     background(backgroundImage)
     raspberry.draw();
     raspberry.update();
-    
+
     obstacles.forEach((obstacle) => {
+
         obstacle.draw();
         obstacle.update();
 
         checkObstacleReset(obstacle);
     });
+
+    if (obstacles[0].collides(raspberry)) {
+        obstacles[0].draw();
+        console.log("SAMC")
+    }
 }
 
 function checkObstacleReset(obstacle: Obstacle){
     if(obstacle.position.x < -obstacleWidth) {
         obstacle.resetPosition(true);
+        obstacles.shift();
+        obstacles.push(obstacle);
     }
 }
 

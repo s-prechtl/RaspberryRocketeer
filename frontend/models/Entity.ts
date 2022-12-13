@@ -3,6 +3,7 @@ abstract class Entity {
     private _width: number;
     private _height: number;
     private fill: number;
+    private _showHitbox: boolean;
 
     //region Getter & Setter
     get position(): Position {
@@ -28,13 +29,23 @@ abstract class Entity {
     set height(value: number) {
         this._height = value;
     }
-    //endregion
+
+    get showHitbox(): boolean {
+        return this._showHitbox;
+    }
+
+    set showHitbox(value: boolean) {
+        this._showHitbox = value;
+    }
+
+//endregion
 
     protected constructor(position: Position, width: number, height: number, fill: number) {
         this.position = position;
         this.width = width;
         this.height = height;
         this.fill = fill;
+        this._showHitbox = false;
     }
 
     public abstract update(): void;
