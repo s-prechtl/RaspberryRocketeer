@@ -11,10 +11,10 @@ class Obstacle extends Entity {
      * Constructs the Obstacle using the top and bottom Pipe
      * (fill is not used here)
      */
-    constructor(pipeTop: Pipe, pipeBottom: Pipe, pipeImagePath: string) {
-        super(pipeTop.position, pipeTop.width, pipeBottom.height, 0);
-        this.pipeTop = pipeTop;
-        this.pipeBottom = pipeBottom;
+    constructor(position: Position, obstacleWidth: number, obstacleHeight: number, pipeImagePath: string) {
+        super(position, obstacleWidth, obstacleHeight, 0);
+        this.pipeTop = new Pipe(position.x, obstacleWidth, obstacleHeight);
+        this.pipeBottom = new Pipe(position.x, obstacleWidth, obstacleHeight);
         this.pipeTop.image = pipeImagePath;
         this.pipeBottom.image = pipeImagePath;
 
@@ -42,6 +42,7 @@ class Obstacle extends Entity {
     public update(): void {
         this.pipeTop.position.x -= this.speed;
         this.pipeBottom.position.x -= this.speed;
+        this.position.x = this.pipeTop.position.x;
     }
 
     public draw(): void {

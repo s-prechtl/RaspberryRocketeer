@@ -12,30 +12,28 @@ function setup() {
     backgroundImage = loadImage(backgroundImagePath);
 
     createCanvas(1000, 1000);
-    obstacleOffset = width / 4;
+    obstacleOffset = width / 3;
 
     raspberry = new Raspberry();
     raspberry.image = raspberryImagePath;
 
     obstacles.push(new Obstacle(
-        new Pipe(width, obstacleWidth, height),
-        new Pipe(width, obstacleWidth, height),
-        pipeImagePath
+        new Position(width, 0),
+        obstacleWidth,
+        height,
+        pipeImagePath,
     ));
     obstacles.push(new Obstacle(
-        new Pipe(width + obstacleOffset, obstacleWidth, height),
-        new Pipe(width + obstacleOffset, obstacleWidth, height),
-        pipeImagePath
+        new Position(width + obstacleOffset, 0),
+        obstacleWidth,
+        height,
+        pipeImagePath,
     ));
     obstacles.push(new Obstacle(
-        new Pipe(width + obstacleOffset * 2, obstacleWidth, height),
-        new Pipe(width + obstacleOffset * 2, obstacleWidth, height),
-        pipeImagePath
-    ));
-    obstacles.push(new Obstacle(
-        new Pipe(width + obstacleOffset * 3, obstacleWidth, height),
-        new Pipe(width + obstacleOffset * 3, obstacleWidth, height),
-        pipeImagePath
+        new Position(width + obstacleOffset * 2, 0),
+        obstacleWidth,
+        height,
+        pipeImagePath,
     ));
 
     obstacles.forEach((obstacle) => obstacle.resetPosition(false));
@@ -50,7 +48,8 @@ function draw() {
         obstacle.draw();
         obstacle.update();
 
-        if(obstacle.position.x < -obstacleWidth) {
+        // console.log(obstacle.position.x);
+        if(obstacle.position.x <= -obstacleWidth) {
             obstacle.resetPosition(true);
         }
     });
