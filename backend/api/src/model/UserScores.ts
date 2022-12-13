@@ -1,4 +1,4 @@
-export interface UserData {
+export interface UserScores {
     username: string,
     highscore: number,
     totalScore: number,

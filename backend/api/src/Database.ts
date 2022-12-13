@@ -2,23 +2,11 @@ import pgPromise from "pg-promise";
 
 
 export abstract class Database {
-    static db = null;
-    get db() {
-        if (Database.db == null) {
-            Database.db = pgPromise({})('postgres://postgres:postgres@db:5432/rr')
+    private static _db = null;
+    static get db() {
+        if (Database._db == null) {
+            Database._db = pgPromise({})('postgres://postgres:postgres@db:5432/rr')
         }
-        return Database.db;
+        return Database._db;
     }
-
-    static async catcher(request): Promise<any> {
-        let data;
-        try {
-            data = await request();
-        } catch (e) {
-            console.log((e as Error).message)
-        }
-        return data;
-    }
-
-
 }

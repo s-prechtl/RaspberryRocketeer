@@ -1,5 +1,7 @@
-import {LeaderboardEntry} from "./LeaderboardEntry.js";
+export type Leaderboard<T> = LeaderboardEntry<T>[];
 
-export class Leaderboard<T> {
-    content: LeaderboardEntry<T>[];
+export interface LeaderboardEntry<T> {
+    rank: number,
+    username: string,
+    score: T,
 }

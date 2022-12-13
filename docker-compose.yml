@@ -15,6 +15,8 @@ services:
 
   api:
     build: backend/api
+    depends_on:
+      - db
     container_name: express-api
     ports:
       - "${EXPRESS_PORT}:3000"
