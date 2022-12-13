@@ -48,8 +48,7 @@ function draw() {
         obstacle.draw();
         obstacle.update();
 
-        // console.log(obstacle.position.x);
-        if(obstacle.position.x <= -obstacleWidth) {
+        if(obstacle.position.x < -obstacleWidth) {
             obstacle.resetPosition(true);
         }
     });
