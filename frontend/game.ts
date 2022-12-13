@@ -54,7 +54,9 @@ function draw() {
     });
 }
 
-//
-// function keyPressed() {
-//
-// }
+
+function keyPressed() {
+    if (key.toLowerCase() == "k") {
+        raspberry.boost();
+    }
+}
