@@ -1,5 +1,5 @@
 const pipeImagePath: string = "resources/raspberry-low-res.png";
-const obstacleWidth: number = 42;
+const obstacleWidth: number = 88;
 let obstacleOffset: number;
 const backgroundImagePath: string = "resources/raspberry-low-res.png";
 let backgroundImage: any;

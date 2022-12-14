@@ -58,14 +58,16 @@ class Raspberry extends Entity {
 
     public draw(): void {
         push();
-        image(this.image, this.position.x, this.position.y, this.width, this.height);
         noFill();
+        translate(this.position.x, this.position.y);
+        // rotate((PI/4)*(this.velocity));
+        image(this.image, 0, 0, this.width, this.height);
         if (!this.showHitbox) {
             noStroke();
         }
         rect(
-            this.position.x,
-            this.position.y,
+            0,
+            0,
             this.width,
             this.height
         );
