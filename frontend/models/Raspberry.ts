@@ -60,7 +60,7 @@ class Raspberry extends Entity {
         push();
         noFill();
         translate(this.position.x, this.position.y);
-        // rotate((PI/4)*(this.velocity));
+        rotate((PI/2)*(this.velocity/Raspberry.maxVelocity));
         image(this.image, 0, 0, this.width, this.height);
         if (!this.showHitbox) {
             noStroke();
