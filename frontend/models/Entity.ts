@@ -37,9 +37,15 @@ abstract class Entity {
     set showHitbox(value: boolean) {
         this._showHitbox = value;
     }
+    //endregion
 
-//endregion
-
+    /**
+     * Constructs the Entity
+     * @param position starting Position
+     * @param width entity width
+     * @param height entity height
+     * @param fill fill color
+     */
     protected constructor(position: Position, width: number, height: number, fill: number) {
         this.position = position;
         this.width = width;

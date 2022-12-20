@@ -9,9 +9,14 @@ class Pipe extends Entity implements Collidable {
     set image(path: string) {
         this._image = loadImage(path);
     }
-
     //endregion
 
+    /**
+     * Constructs the pipe
+     * @param positionX starting x-Position 
+     * @param width pipe width
+     * @param height pipe height
+     */
     constructor(positionX: number, width: number, height: number) {
         super(new Position(positionX, 0), width, height, 0);
     }
@@ -32,6 +37,10 @@ class Pipe extends Entity implements Collidable {
         pop();
     }
 
+    /**
+     * Determines when the pipe is colliding with another entity
+     * @param o other entity
+     */
     collides(o: Entity): boolean {
         return this.position.x < (o.position.x + o.width) && //inside left border
             (this.position.x + this.width) > o.position.x && //but not outside right border

@@ -20,6 +20,11 @@ class Position {
     }
     //endregion
 
+    /**
+     * Constructs the position
+     * @param x x-Position
+     * @param y y-Position
+     */
     constructor(x: number, y: number) {
         this._x = x;
         this._y = y;

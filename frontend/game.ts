@@ -22,6 +22,9 @@ function setup() {
     setupGame();
 }
 
+/**
+ * Sets up everything needed for the game
+ */
 function setupGame() {
     paused = true;
 
@@ -29,6 +32,7 @@ function setupGame() {
     raspberry = new Raspberry();
     raspberry.image = raspberryImagePath;
 
+    // Create all obstacles
     obstacles = [];
     obstacles.push(new Obstacle(
         new Position(width, 0),
@@ -49,7 +53,8 @@ function setupGame() {
         pipeImagePath,
     ));
 
-    obstacles.forEach((obstacle) => obstacle.resetPosition(false));
+    // Randomize position of all Obstacles
+    obstacles.forEach((obstacle) => obstacle.randomizeHeight());
 }
 
 function draw() {
@@ -59,6 +64,7 @@ function draw() {
     }
     raspberry.draw();
     
+    // Reset Obstacles Position
     obstacles.forEach((obstacle) => {
         if (!paused) {
             obstacle.update();
@@ -68,6 +74,7 @@ function draw() {
         obstacle.draw();
     });
 
+    // Check for collisions with pipes and set score
     if (!paused) {
         if (obstacles[0].collides(raspberry)) {
             setupGame();
@@ -75,21 +82,29 @@ function draw() {
         checkRaspberryScore();
         obstacles[0].draw();
     }
+    
     push();
     fill(200, 100, 60);
     text(score, width / 2, height / 10, width, height);
     pop();
 }
 
+/**
+ * Check if obstacle positions should be reset and reset if so
+ * @param obstacle obstacle to check
+ */
 function checkObstacleReset(obstacle: Obstacle) {
     if (obstacle.position.x < -obstacleWidth) {
-        obstacle.resetPosition(true);
+        obstacle.resetPosition();
         obstacles.shift();
         obstacles.push(obstacle);
         hasAlreadyScored = false;
     }
 }
 
+/**
+ * Check if the raspberry should score and set score
+ */
 function checkRaspberryScore() {
     if ((obstacles[0].position.x + obstacles[0].width / 2) < (raspberry.position.x + raspberry.width / 2)
         && !hasAlreadyScored) {
@@ -99,9 +114,12 @@ function checkRaspberryScore() {
 }
 
 function keyPressed() {
+    // Jump
     if (key.toLowerCase() == "k") {
         raspberry.boost();
     }
+    
+    // Pause the Game
     if (key == "Escape") {
         paused = !paused;
     } else if (paused) {

@@ -6,8 +6,6 @@ class Raspberry extends Entity {
     private static readonly maxVelocity: number = 100;
 
     //region Getter & Setter
-
-
     get velocity(): number {
         return this._velocity;
     }
@@ -24,8 +22,11 @@ class Raspberry extends Entity {
         this._image = loadImage(path);
     }
 
-//endregion
+    //endregion
 
+    /**
+     * Constructs the Raspberry with fixed sizes
+     */
     constructor() {
         super(new Position(width / 6, height / 2), 180, 70, 0);
     }
@@ -35,14 +36,17 @@ class Raspberry extends Entity {
         this.forceBoundaries();
     }
 
+    /**
+     * Lets the Raspberry fall to the ground
+     */
     private applyGravity(): void {
         this.velocity += this.gravity;
         this.position.y += this.velocity;
     }
 
     private forceBoundaries(): void {
-        if (this.position.y+this.height > height) {
-            this.position.y = height-this.height;
+        if (this.position.y + this.height > height) {
+            this.position.y = height - this.height;
             this.velocity = 0;
         }
 
@@ -51,7 +55,7 @@ class Raspberry extends Entity {
             this.velocity = 0;
         }
     }
-
+    
     public boost(): void {
         this.velocity += this.lift;
     }
@@ -60,7 +64,7 @@ class Raspberry extends Entity {
         push();
         noFill();
         translate(this.position.x, this.position.y);
-        rotate((PI/2)*(this.velocity/Raspberry.maxVelocity));
+        rotate((PI / 2) * (this.velocity / Raspberry.maxVelocity));
         image(this.image, 0, 0, this.width, this.height);
         if (!this.showHitbox) {
             noStroke();
