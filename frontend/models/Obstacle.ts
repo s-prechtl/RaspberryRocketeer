@@ -1,8 +1,8 @@
-class Obstacle extends Entity implements Collidable{
+class Obstacle extends Entity implements Collidable {
     private pipeTop: Pipe;
     private pipeBottom: Pipe;
     private readonly distanceBetweenPipes: number;
-    private readonly padding: number = 300;
+    private readonly padding: number = 150;
     private readonly speed: number = 3;
 
     private static startX: number;
@@ -23,13 +23,12 @@ class Obstacle extends Entity implements Collidable{
     }
 
     public resetPosition(resetX: boolean): void {
-        this.pipeBottom.position.y =
-            this.distanceBetweenPipes + this.randomRange(0, height - this.padding - 1.2 * this.distanceBetweenPipes);
+        this.pipeTop.height = this.randomRange(this.padding, height - this.padding - this.distanceBetweenPipes);
+        this.pipeTop.position.y = 0;
+        this.pipeBottom.position.y = this.pipeTop.height + this.distanceBetweenPipes;
+        this.pipeBottom.height = height - this.pipeTop.height - this.padding;
 
-        this.pipeTop.position.y =
-            this.pipeBottom.position.y - this.distanceBetweenPipes - this.pipeTop.height;
-
-        if(resetX){
+        if (resetX) {
             this.pipeBottom.position.x = Obstacle.startX;
             this.pipeTop.position.x = Obstacle.startX;
         }
