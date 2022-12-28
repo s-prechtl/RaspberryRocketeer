@@ -1,23 +1,33 @@
 import express from 'express';
-import {Database} from "./Database.js";
 import {TimeLeaderboardManager} from "./manager/TimeLeaderboardManager.js";
+import {TimeLeaderboardPgPromiseManager} from "./manager/pgPromise/TimeLeaderboardPgPromiseManager.js";
+import {HighscoreLeaderboardPgPromiseManager} from "./manager/pgPromise/HighscoreLeaderboardPgPromiseManager.js";
 import {HighscoreLeaderboardManager} from "./manager/HighscoreLeaderboardManager.js";
-import {
-    HighscoreLeaderboardPgPromiseSerializer
-} from "./serializer/pgpromise/HighscoreLeaderboardPgPromiseSerializer.js";
-import {TimeLeaderboardPgPromiseSerializer} from "./serializer/pgpromise/TimeLeaderboardPgPromiseSerializer.js";
+import {HighscoreLeaderboard, TimeLeaderboard} from "./model/Leaderboard.js";
 
 export const leaderboardRoute = express.Router()
 
 
 leaderboardRoute.get('/highscore', async (req, res) => {
-    let data = await Database.db.manyOrNone('SELECT * FROM lb_highscore INNER JOIN "user" ON user_id = id ORDER BY RANK;')
-    const leaderboardManager = new HighscoreLeaderboardManager(data, new HighscoreLeaderboardPgPromiseSerializer);
-    res.send(leaderboardManager.content)
+    try {
+        const highscoreLeaderboardManager: HighscoreLeaderboardManager = new HighscoreLeaderboardPgPromiseManager;
+        const highscoreLeaderboard: HighscoreLeaderboard = await highscoreLeaderboardManager.getAll();
+        res.send(highscoreLeaderboard);
+    } catch (error) {
+        // handle errors
+        console.log(error)
+        res.status(500).json({ errors: [{msg: "Internal server error"}]})
+    }
 })
 
 leaderboardRoute.get('/totalplaytime', async (req, res) => {
-    let data = await Database.db.manyOrNone('SELECT * FROM lb_total_playtime INNER JOIN "user" ON user_id = id ORDER BY RANK;')
-    const leaderboardManager = new TimeLeaderboardManager(data, new TimeLeaderboardPgPromiseSerializer);
-    res.send(leaderboardManager.content)
+    try {
+        const timeLeaderboardManager: TimeLeaderboardManager = new TimeLeaderboardPgPromiseManager;
+        const timeLeaderboard: TimeLeaderboard = await timeLeaderboardManager.getAll();
+        res.send(timeLeaderboard);
+    } catch (error) {
+        // handle errors
+        console.log(error)
+        res.status(500).json({ errors: [{msg: "Internal server error"}]})
+    }
 })

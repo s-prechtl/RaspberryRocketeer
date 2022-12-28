@@ -4,7 +4,7 @@ CREATE TABLE "user" (
 );
 
 CREATE TABLE user_scores (
-    user_id INT PRIMARY KEY REFERENCES "user",
+    user_id INT PRIMARY KEY,
     highscore INT NOT NULL DEFAULT 0,
     total_score INT NOT NULL DEFAULT 0,
     total_playtime TIME NOT NULL DEFAULT '00:00:00',
