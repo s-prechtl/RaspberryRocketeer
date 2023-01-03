@@ -1,8 +1,8 @@
-import {UserManager} from "../UserManager.js";
+import {UserRepository} from "../UserRepository.js";
 import {User} from "../../model/User.js";
 import {Database} from "../../Database.js";
 
-export class UserPgPromiseManager extends UserManager {
+export class UserPgPromiseRepository extends UserRepository {
     async getById(id: number): Promise<User> {
         const raw = await Database.db.oneOrNone(
             'SELECT * FROM "user" WHERE id = $1;', id
@@ -38,16 +38,10 @@ export class UserPgPromiseManager extends UserManager {
         return this.serialize(raw);
     }
 
-    //region serialization
     protected serialize(raw: any): User {
         return {
             id: raw.id,
             name: raw.name
         };
     }
-
-    protected deserialize(parsed: User): any {
-        throw new Error("Method not implemented.")
-    }
-    //endregion
 }

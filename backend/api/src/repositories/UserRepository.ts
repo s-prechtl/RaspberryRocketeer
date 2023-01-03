@@ -1,7 +1,6 @@
-import {Manager} from "./Manager.js";
 import {User} from "../model/User.js";
 
-export abstract class UserManager extends Manager<User>{
+export abstract class UserRepository {
     abstract getById(id: number): Promise<User>;
     abstract getByName(name: string): Promise<User>;
     abstract withIdExists(userId: number): Promise<boolean>;

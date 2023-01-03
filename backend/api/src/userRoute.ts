@@ -1,13 +1,13 @@
 import express from "express";
 import { body, param, validationResult } from 'express-validator';
-import {UserScoresPgPromiseManager} from "./manager/pgPromise/UserScoresPgPromiseManager.js";
-import {UserPgPromiseManager} from "./manager/pgPromise/UserPgPromiseManager.js";
-import {UserManager} from "./manager/UserManager.js";
-import {UserScoresManager} from "./manager/UserScoresManager.js";
+import {UserScoresPgPromiseRepository} from "./repositories/pgPromise/UserScoresPgPromiseRepository.js";
+import {UserPgPromiseRepository} from "./repositories/pgPromise/UserPgPromiseRepository.js";
+import {UserRepository} from "./repositories/UserRepository.js";
+import {UserScoresRepository} from "./repositories/UserScoresRepository.js";
 import {User} from "./model/User.js";
 
-
 export const userRoute = express.Router()
+userRoute.use(express.json())
 
 userRoute.post(
     '/register',
@@ -23,9 +23,8 @@ userRoute.post(
                 return res.status(400).json({ errors: errors.array() });
             }
             //endregion
-
             const username: string = req.body.name;
-            const userManager: UserManager = new UserPgPromiseManager();
+            const userManager: UserRepository = new UserPgPromiseRepository();
 
             // check if username already exists
             if (await userManager.withNameExists(username)) {
@@ -53,7 +52,7 @@ userRoute.get('/:userId/scores',
         //endregion
 
         const userId: number = req.params.userId;
-        const userManager: UserManager = new UserPgPromiseManager;
+        const userManager: UserRepository = new UserPgPromiseRepository;
 
         try {
             // check if user with given id exists
@@ -61,7 +60,7 @@ userRoute.get('/:userId/scores',
                 return res.status(400).json({ errors: [{msg: `User with id ${userId} does not exist.`}] })
             }
             // get & return data
-            const userScoresManager: UserScoresManager = new UserScoresPgPromiseManager;
+            const userScoresManager: UserScoresRepository = new UserScoresPgPromiseRepository;
             const userScores = await userScoresManager.getById(userId);
             res.json(userScores);
         } catch (error) {

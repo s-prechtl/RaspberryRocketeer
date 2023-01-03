@@ -1,16 +1,15 @@
 import express from 'express';
-import {TimeLeaderboardManager} from "./manager/TimeLeaderboardManager.js";
-import {TimeLeaderboardPgPromiseManager} from "./manager/pgPromise/TimeLeaderboardPgPromiseManager.js";
-import {HighscoreLeaderboardPgPromiseManager} from "./manager/pgPromise/HighscoreLeaderboardPgPromiseManager.js";
-import {HighscoreLeaderboardManager} from "./manager/HighscoreLeaderboardManager.js";
+import {TimeLeaderboardRepository} from "./repositories/TimeLeaderboardRepository.js";
+import {TimeLeaderboardPgPromiseRepository} from "./repositories/pgPromise/TimeLeaderboardPgPromiseRepository.js";
+import {HighscoreLeaderboardPgPromiseRepository} from "./repositories/pgPromise/HighscoreLeaderboardPgPromiseRepository.js";
+import {HighscoreLeaderboardRepository} from "./repositories/HighscoreLeaderboardRepository.js";
 import {HighscoreLeaderboard, TimeLeaderboard} from "./model/Leaderboard.js";
 
 export const leaderboardRoute = express.Router()
 
-
 leaderboardRoute.get('/highscore', async (req, res) => {
     try {
-        const highscoreLeaderboardManager: HighscoreLeaderboardManager = new HighscoreLeaderboardPgPromiseManager;
+        const highscoreLeaderboardManager: HighscoreLeaderboardRepository = new HighscoreLeaderboardPgPromiseRepository;
         const highscoreLeaderboard: HighscoreLeaderboard = await highscoreLeaderboardManager.getAll();
         res.send(highscoreLeaderboard);
     } catch (error) {
@@ -22,7 +21,7 @@ leaderboardRoute.get('/highscore', async (req, res) => {
 
 leaderboardRoute.get('/totalplaytime', async (req, res) => {
     try {
-        const timeLeaderboardManager: TimeLeaderboardManager = new TimeLeaderboardPgPromiseManager;
+        const timeLeaderboardManager: TimeLeaderboardRepository = new TimeLeaderboardPgPromiseRepository;
         const timeLeaderboard: TimeLeaderboard = await timeLeaderboardManager.getAll();
         res.send(timeLeaderboard);
     } catch (error) {
