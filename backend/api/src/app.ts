@@ -1,6 +1,7 @@
 import express from 'express';
 import helmet from "helmet";
 import morgan from 'morgan';
+import cors from 'cors';
 import {leaderboardRoute} from "./leaderboardRoute.js";
 import {userRoute} from "./userRoute.js";
 import {gameRoute} from "./gameRoute.js";
@@ -10,6 +11,7 @@ const app = express()
 const port = 3000
 
 app.use(helmet())
+app.use(cors())
 
 // configure & use logger
 let morganFormatted = morgan('[:date[iso]] :method :url - :status')

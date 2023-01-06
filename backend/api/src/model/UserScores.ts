@@ -1,10 +1,10 @@
-import {Time} from "./Time.js";
+
 
 export interface UserScores {
     userId: number,
     highscore: number,
     totalScore: number,
-    totalPlaytime: Time,
+    totalPlaytime: string,
     averageScore: number,
     gamesPlayed: number,
 }
