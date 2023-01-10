@@ -54,8 +54,14 @@ abstract class Entity {
         this._showHitbox = false;
     }
 
+    /**
+     * Updates the entity.
+     */
     public abstract update(): void;
 
+    /**
+     * Draws the entity.
+     */
     public draw(): void {
         push();
         fill(this.fill);

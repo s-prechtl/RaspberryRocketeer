@@ -19,6 +19,7 @@ function setup() {
     createCanvas(2000, 1000);
     obstacleOffset = width / 3;
     Obstacle.distanceBetweenPipes = height / 2.5
+    Obstacle.startX = width;
 
     textSize(150);
     textFont("resources/PressStart2P-Regular.ttf");

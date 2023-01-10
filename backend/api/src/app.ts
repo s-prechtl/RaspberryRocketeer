@@ -6,10 +6,11 @@ import {leaderboardRoute} from "./leaderboardRoute.js";
 import {userRoute} from "./userRoute.js";
 import {gameRoute} from "./gameRoute.js";
 
-// TODO: Rename variables --> Responsotory + Comments
+// initialize express
 const app = express()
 const port = 3000
 
+// use needed middlewares
 app.use(helmet())
 app.use(cors())
 
