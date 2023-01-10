@@ -1,10 +1,10 @@
 class Obstacle extends Entity implements Collidable {
     private pipeTop: Pipe;
     private pipeBottom: Pipe;
-    private static _distanceBetweenPipes: number;
     private readonly padding: number = 150;
     private readonly speed: number = 3;
 
+    private static _distanceBetweenPipes: number;
     private static _startX: number;
 
     static set startX(value: number) {
@@ -46,8 +46,8 @@ class Obstacle extends Entity implements Collidable {
      * Randomizes the height of the pipes
      */
     public randomizeHeight(): void {
-        this.pipeTop.height = this.randomRange(this.padding, height - this.padding - Obstacle._distanceBetweenPipes);
-        this.pipeBottom.position.y = this.pipeTop.height + Obstacle._distanceBetweenPipes;
+        this.pipeTop.height = this.randomRange(this.padding, height - this.padding - Obstacle.distanceBetweenPipes);
+        this.pipeBottom.position.y = this.pipeTop.height + Obstacle.distanceBetweenPipes;
         this.pipeBottom.height = height - this.pipeTop.height - this.padding;
     }
 
@@ -61,9 +61,8 @@ class Obstacle extends Entity implements Collidable {
     }
 
     public update(): void {
-        // TODO: Put into pipe.update
-        this.pipeTop.position.x -= this.speed;
-        this.pipeBottom.position.x -= this.speed;
+        this.pipeTop.move(this.speed);
+        this.pipeBottom.move(this.speed);
         this.position.x = this.pipeTop.position.x;
     }
 
