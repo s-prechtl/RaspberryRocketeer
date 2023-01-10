@@ -19,14 +19,26 @@ let ready: boolean = true;
 function setup() {
     backgroundImage = loadImage(BACKGROUND_IMAGE_PATH);
     createCanvas(2000, 1000);
+    setupObstacleConsts();
+    setupFont();
+    setupGame();
+}
+
+/**
+ * Sets up the constants needed for the game.
+ */
+function setupObstacleConsts() {
     obstacleOffset = width / 3;
     Obstacle.distanceBetweenPipes = height / 2.5
     Obstacle.startX = width;
+}
 
+/**
+ * Set up the font.
+ */
+function setupFont() {
     textSize(150);
     textFont("resources/PressStart2P-Regular.ttf");
-
-    setupGame();
 }
 
 /**
@@ -35,22 +47,18 @@ function setup() {
 function setupGame() {
     paused = true;
     raspberry = new Raspberry(RASPBERRY_IMAGE_PATH);
+    setupObstacles();
+}
 
-    Obstacle.distanceBetweenPipes = height / 2.5;
-    Obstacle.startX = width;
-
-    // Create all obstacles
+/**
+ * Clears the obstacles and reinitializes them.
+ */
+function setupObstacles() {
     obstacles = [];
     for (let i = 0; i < 3; i++) {
-        obstacles.push(new Obstacle(
-            new Position(width + obstacleOffset * i, 0),
-            OBSTACLE_WIDTH,
-            height,
-            PIPE_IMAGE_PATH,
-        ));
+        obstacles.push(
+            new Obstacle(new Position(width + obstacleOffset * i, 0), OBSTACLE_WIDTH, height, PIPE_IMAGE_PATH));
     }
-
-    // Randomize position of all Obstacles
     obstacles.forEach((obstacle) => obstacle.randomizeHeight());
 }
 
@@ -71,6 +79,7 @@ function drawGame() {
     drawEntities();
     displayScore();
 }
+
 /**
  * Draws the game's enities.
  */
@@ -94,7 +103,7 @@ function gameLoop() {
  * Checks the collision between an obstacle and the raspberry.
  * @param o
  */
-function collisionCheck(o: Obstacle){
+function collisionCheck(o: Obstacle) {
     if (o.collides(raspberry)) {
         die();
         setupGame();
@@ -104,7 +113,7 @@ function collisionCheck(o: Obstacle){
 /**
  * Timeouts key events.
  */
-async function die() {
+function die() {
     ready = false;
     hasDied = true;
     setTimeout(() => ready = true, 1000);
@@ -113,7 +122,7 @@ async function die() {
 /**
  * Displays the game score.
  */
-function displayScore(){
+function displayScore() {
     push();
     fill(200, 100, 60);
     text(score, width / 2, height / 10, width, height);
@@ -174,7 +183,7 @@ function checkRaspberryScore() {
  * Resets the score if game is started
  */
 function resetScore(): void {
-    if(hasDied){
+    if (hasDied) {
         hasDied = false;
         score = 0;
         hasAlreadyScored = false;
