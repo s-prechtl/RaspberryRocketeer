@@ -11,6 +11,7 @@ let paused: boolean;
 let score: number = 0;
 let hasAlreadyScored: boolean = false;
 let hasDied: boolean = false;
+let ready: boolean = true;
 
 /**
  * p5 setup function.
@@ -58,19 +59,55 @@ function setupGame() {
  */
 function draw() {
     update();
+    gameLoop();
+    drawGame();
+}
+
+/**
+ * Draws the game's elements.
+ */
+function drawGame() {
     background(backgroundImage);
+    drawEntities();
+    displayScore();
+}
+/**
+ * Draws the game's enities.
+ */
+function drawEntities() {
     raspberry.draw();
     drawObstacles();
-    // Check for collisions with pipes and set score
+}
+
+/**
+ * Operations for the game's functionality.
+ */
+function gameLoop() {
     if (!paused) {
-        if (obstacles[0].collides(raspberry)) {
-            hasDied = true;
-            setupGame();
-        }
+        collisionCheck(obstacles[0]);
         checkRaspberryScore();
         obstacles[0].draw();
     }
-    displayScore();
+}
+
+/**
+ * Checks the collision between an obstacle and the raspberry.
+ * @param o
+ */
+function collisionCheck(o: Obstacle){
+    if (o.collides(raspberry)) {
+        die();
+        setupGame();
+    }
+}
+
+/**
+ * Timeouts key events.
+ */
+async function die() {
+    ready = false;
+    hasDied = true;
+    setTimeout(() => ready = true, 1000);
 }
 
 /**
@@ -147,7 +184,8 @@ function resetScore(): void {
 /**
  * Handler for key events.
  */
-function keyPressed() {    
+function keyPressed() {
+    if (!ready) return;
     // Jump
     if (key.toLowerCase() == "k") {
         resetScore();

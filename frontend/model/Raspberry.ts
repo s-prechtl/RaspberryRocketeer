@@ -1,36 +1,97 @@
+/**
+ * Raspberry class.
+ */
 class Raspberry extends Entity {
+    /**
+     * Amount of lift applied when boosting.
+     * @private
+     */
     private readonly lift: number = -20;
-    private readonly gravity: number = 1.314159265358979323846264338;
-    private _velocity: number = 0;
-    private _image: any;
 
+    /**
+     * Gravity applied.
+     * @private
+     */
+    private readonly gravity: number = 1.314159265358979323846264338;
+
+    /**
+     * Current speed.
+     * @private
+     */
+    private _velocity: number = 0;
+
+    /**
+     * Image for the raspberry.
+     * @private
+     */
+    private _image: p5.Image;
+
+    /**
+     * Position.
+     * @private
+     */
     private static position: Position;
+
+    /**
+     * Maximum velocity, so the raspberry doesn't get to infinite speed when boosting.
+     * @private
+     */
     private static readonly maxVelocity: number = 100;
+
+    /**
+     * Width.
+     * @private
+     */
     private static readonly WIDTH: number = 180;
+
+    /**
+     * Height.
+     * @private
+     */
     private static readonly HEIGHT: number = 70;
+
+    /**
+     * Color.
+     * @private
+     */
     private static readonly FILL: number = 0;
 
     //region Getter & Setter
+
+    /**
+     * Gets the velocity.
+     */
     get velocity(): number {
         return this._velocity;
     }
 
+    /**
+     * Sets the velocity.
+     * @param value
+     */
     set velocity(value: number) {
         this._velocity = (Math.abs(this.velocity) > Raspberry.maxVelocity) ? Raspberry.maxVelocity : value;
     }
 
-    get image(): any {
+    /**
+     * Gets the image.
+     */
+    get image(): p5.Image {
         return this._image;
     }
 
-    set image(path: string) {
+    /**
+     * Sets the image by path.
+     * @param {string} path
+     */
+    set image(path: any) {
         this._image = loadImage(path);
     }
 
     //endregion
 
     /**
-     * Constructs the Raspberry with fixed sizes
+     * Constructs the Raspberry with fixed sizes.
      */
     constructor(image: string) {
         Raspberry.position = new Position(width / 6, height / 2);
@@ -38,6 +99,9 @@ class Raspberry extends Entity {
         this.image = image;
     }
 
+    /**
+     * Applies gravity and keeps the raspberry within the canvas.
+     */
     public update(): void {
         this.applyGravity();
         this.forceBoundaries();
@@ -51,22 +115,47 @@ class Raspberry extends Entity {
         this.position.y += this.velocity;
     }
 
+    /**
+     * Limits the raspberry's movement to the shown canvas.
+     * @private
+     */
     private forceBoundaries(): void {
-        if (this.position.y + this.height > height) {
-            this.position.y = height - this.height;
-            this.velocity = 0;
-        }
+        this.boundaryTop();
+        this.boundaryBottom();
+    }
 
+    /**
+     * Forces the boundaries at the canvas' top.
+     * @private
+     */
+    private boundaryTop(): void {
         if (this.position.y < 0) {
             this.position.y = 0;
             this.velocity = 0;
         }
     }
-    
+
+    /**
+     * Forces the boundaries at the canvas' bottom.
+     * @private
+     */
+    private boundaryBottom(): void {
+        if (this.position.y + this.height > height) {
+            this.position.y = height - this.height;
+            this.velocity = 0;
+        }
+    }
+
+    /**
+     * Lets the raspberry jump.
+     */
     public boost(): void {
         this.velocity += this.lift;
     }
 
+    /**
+     * Draws raspberry.
+     */
     public draw(): void {
         push();
         noFill();
@@ -76,12 +165,7 @@ class Raspberry extends Entity {
         if (!this.showHitbox) {
             noStroke();
         }
-        rect(
-            0,
-            0,
-            this.width,
-            this.height
-        );
+        rect(0, 0, this.width, this.height);
         pop();
     }
 }
