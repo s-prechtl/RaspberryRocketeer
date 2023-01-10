@@ -5,7 +5,7 @@ class Raspberry extends Entity {
     private _image: any;
 
     private static readonly maxVelocity: number = 100;
-    private static readonly POSITION: Position = new Position(width / 6, height / 2);
+    private static POSITION: Position;
     private static readonly WIDTH: number = 180;
     private static readonly HEIGHT: number = 70;
     private static readonly FILL: number = 0;
@@ -33,6 +33,7 @@ class Raspberry extends Entity {
      * Constructs the Raspberry with fixed sizes
      */
     constructor(image: string) {
+        Raspberry.POSITION = new Position(width / 6, height / 2)
         super(Raspberry.POSITION, Raspberry.WIDTH, Raspberry.HEIGHT, Raspberry.FILL);
         this.image = image;
     }

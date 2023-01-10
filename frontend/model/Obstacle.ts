@@ -37,17 +37,16 @@ class Obstacle extends Entity implements Collidable {
      */
     public resetPosition(): void {
         this.randomizeHeight();
-
-        this.pipeBottom.position.x = Obstacle.startX;
-        this.pipeTop.position.x = Obstacle.startX;
+        this.pipeBottom.position.x = Obstacle._startX;
+        this.pipeTop.position.x = Obstacle._startX;
     }
 
     /**
      * Randomizes the height of the pipes
      */
     public randomizeHeight(): void {
-        this.pipeTop.height = this.randomRange(this.padding, height - this.padding - Obstacle.distanceBetweenPipes);
-        this.pipeBottom.position.y = this.pipeTop.height + Obstacle.distanceBetweenPipes;
+        this.pipeTop.height = this.randomRange(this.padding, height - this.padding - Obstacle._distanceBetweenPipes);
+        this.pipeBottom.position.y = this.pipeTop.height + Obstacle._distanceBetweenPipes;
         this.pipeBottom.height = height - this.pipeTop.height - this.padding;
     }
 
