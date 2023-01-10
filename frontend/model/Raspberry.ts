@@ -92,6 +92,7 @@ class Raspberry extends Entity {
 
     /**
      * Constructs the Raspberry with fixed sizes.
+     * @param image Path to image
      */
     constructor(image: string) {
         Raspberry.position = new Position(width / 6, height / 2);
@@ -159,13 +160,43 @@ class Raspberry extends Entity {
     public draw(): void {
         push();
         noFill();
-        translate(this.position.x, this.position.y);
-        rotate((PI / 2) * (this.velocity / Raspberry.maxVelocity));
+        this.setPose();
+        this.drawObject();
+        pop();
+    }
+
+    /**
+     * Draws the rocket.
+     * @private
+     */
+    private drawObject() {
+        this.drawHitBox();
+        this.drawRocket();
+    }
+
+    /**
+     * Handles the drawing of the object.
+     */
+    private drawRocket() {
         image(this.image, 0, 0, this.width, this.height);
+        rect(0, 0, this.width, this.height);
+    }
+
+    /**
+     * If enabled, draws the hitbox.
+     */
+    private drawHitBox() {
         if (!this.showHitbox) {
             noStroke();
         }
-        rect(0, 0, this.width, this.height);
-        pop();
+    }
+
+    /**
+     * Rotation and position of the rocket.
+     * @private
+     */
+    private setPose() {
+        translate(this.position.x, this.position.y);
+        rotate((PI / 2) * (this.velocity / Raspberry.maxVelocity));
     }
 }

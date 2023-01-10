@@ -1,3 +1,6 @@
+/**
+ * Obstacle of the game. Built from 2 pipes, one at the bottom, one at the top.
+ */
 class Obstacle extends Entity implements Collidable {
     private pipeTop: Pipe;
     private pipeBottom: Pipe;
@@ -16,8 +19,7 @@ class Obstacle extends Entity implements Collidable {
     }
 
     /**
-     * Constructs the Obstacle with the given image
-     * (fill is not used here)
+     * Constructs the Obstacle with the given image.
      * @param position starting position of the obstacle
      * @param obstacleWidth width of the obstacle
      * @param obstacleHeight height of the obstacle
@@ -25,10 +27,20 @@ class Obstacle extends Entity implements Collidable {
      */
     constructor(position: Position, obstacleWidth: number, obstacleHeight: number, pipeImagePath: string) {
         super(position, obstacleWidth, obstacleHeight, 0);
-        this.pipeTop = new Pipe(position.x, obstacleWidth, obstacleHeight);
-        this.pipeBottom = new Pipe(position.x, obstacleWidth, obstacleHeight);
-        this.pipeTop.image = pipeImagePath;
-        this.pipeBottom.image = pipeImagePath;
+        this.createPipes(position, obstacleHeight, obstacleWidth, pipeImagePath);
+    }
+
+    /**
+     * Creates the pipes.
+     * @param position
+     * @param obstacleHeight
+     * @param obstacleWidth
+     * @param pipeImagePath
+     * @private
+     */
+    private createPipes(position: Position, obstacleHeight: number, obstacleWidth: number, pipeImagePath: string) {
+        this.pipeTop = new Pipe(position.x, obstacleWidth, obstacleHeight, pipeImagePath);
+        this.pipeBottom = new Pipe(position.x, obstacleWidth, obstacleHeight, pipeImagePath);
     }
 
     /**

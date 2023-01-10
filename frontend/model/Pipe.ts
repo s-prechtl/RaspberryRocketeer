@@ -1,39 +1,55 @@
+/**
+ * Rectangular obstacle.
+ */
 class Pipe extends Entity implements Collidable {
-    private _image: any;
+    /**
+     * Pipe's image.
+     * @private
+     */
+    private _image: p5.Image;
 
     //region Getter & Setter
-    get image(): any {
+    /**
+     * Gets the image.
+     */
+    get image(): p5.Image {
         return this._image;
     }
 
-    set image(path: string) {
+    /**
+     * Sets the image.
+     * @param path Path to image
+     */
+    set image(path: any) {
         this._image = loadImage(path);
     }
     //endregion
 
     /**
-     * Constructs the pipe
-     * @param positionX starting x-Position 
+     * Constructs the pipe.
+     * @param positionX starting x-Position
      * @param width pipe width
      * @param height pipe height
+     * @param image path to image.
      */
-    constructor(positionX: number, width: number, height: number) {
+    constructor(positionX: number, width: number, height: number, image: string) {
         super(new Position(positionX, 0), width, height, 0);
+        this.image = image;
     }
 
-    public update(): void {
-    }
+    /**
+     * YAGNI.
+     */
+    public update(): void {}
 
+    /**
+     * Draws the pipe.
+     */
     public draw(): void {
         push();
-        image(this.image, this.position.x, this.position.y, this.width, this.height);
         noFill();
-        rect(
-            this.position.x,
-            this.position.y,
-            this.width,
-            this.height
-        );
+        image(this.image, this.position.x, this.position.y, this.width, this.height);
+        rect(this.position.x, this.position.y, this.width, this.height);
         pop();
     }
 

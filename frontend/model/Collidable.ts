@@ -1,3 +1,6 @@
+/**
+ * Collide-able objects.
+ */
 interface Collidable {
     /**
      * Determines when two entities collide
