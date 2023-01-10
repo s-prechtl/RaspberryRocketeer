@@ -38,6 +38,14 @@ class Pipe extends Entity implements Collidable {
     }
 
     /**
+     * Moves the pipe to the lift with the given speed
+     * @param speed how fast the pipe moves
+     */
+    public move(speed: number): void {
+        this.position.x -= speed;
+    }
+
+    /**
      * Determines when the pipe is colliding with another entity
      * @param o other entity
      */

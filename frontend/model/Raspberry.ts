@@ -3,7 +3,12 @@ class Raspberry extends Entity {
     private readonly gravity: number = 1.314159265358979323846264338;
     private _velocity: number = 0;
     private _image: any;
+
     private static readonly maxVelocity: number = 100;
+    private static readonly POSITION: Position = new Position(width / 6, height / 2);
+    private static readonly WIDTH: number = 180;
+    private static readonly HEIGHT: number = 70;
+    private static readonly FILL: number = 0;
 
     //region Getter & Setter
     get velocity(): number {
@@ -27,9 +32,9 @@ class Raspberry extends Entity {
     /**
      * Constructs the Raspberry with fixed sizes
      */
-    constructor() {
-        // TODO: Move literals to consta
-        super(new Position(width / 6, height / 2), 180, 70, 0);
+    constructor(image: string) {
+        super(Raspberry.POSITION, Raspberry.WIDTH, Raspberry.HEIGHT, Raspberry.FILL);
+        this.image = image;
     }
 
     public update(): void {

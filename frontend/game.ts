@@ -30,8 +30,11 @@ function setupGame() {
     paused = true;
 
     score = 0;
-    raspberry = new Raspberry();
-    raspberry.image = RASPBERRY_IMAGE_PATH;
+    hasAlreadyScored = false;
+    raspberry = new Raspberry(RASPBERRY_IMAGE_PATH);
+
+    Obstacle.distanceBetweenPipes = height / 2.5;
+    Obstacle.startX = width;
 
     // Create all obstacles
     obstacles = [];

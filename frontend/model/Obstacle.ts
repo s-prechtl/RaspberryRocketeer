@@ -1,11 +1,11 @@
 class Obstacle extends Entity implements Collidable {
     private pipeTop: Pipe;
     private pipeBottom: Pipe;
-    private static distanceBetweenPipes: number;
     private readonly padding: number = 150;
     private readonly speed: number = 3;
 
-    private static startX: number;
+    public static distanceBetweenPipes: number;
+    public static startX: number;
 
     /**
      * Constructs the Obstacle with the given image
@@ -21,10 +21,6 @@ class Obstacle extends Entity implements Collidable {
         this.pipeBottom = new Pipe(position.x, obstacleWidth, obstacleHeight);
         this.pipeTop.image = pipeImagePath;
         this.pipeBottom.image = pipeImagePath;
-
-        Obstacle.distanceBetweenPipes = height / 2.5;
-        //TODO: Put into setupGame()
-        Obstacle.startX = width;
     }
 
     /**
@@ -43,8 +39,6 @@ class Obstacle extends Entity implements Collidable {
      */
     public randomizeHeight(): void {
         this.pipeTop.height = this.randomRange(this.padding, height - this.padding - Obstacle.distanceBetweenPipes);
-        //TODO: Soi des do sei?
-        this.pipeTop.position.y = 0;
         this.pipeBottom.position.y = this.pipeTop.height + Obstacle.distanceBetweenPipes;
         this.pipeBottom.height = height - this.pipeTop.height - this.padding;
     }
@@ -59,9 +53,8 @@ class Obstacle extends Entity implements Collidable {
     }
 
     public update(): void {
-        // TODO: Put into pipe.update
-        this.pipeTop.position.x -= this.speed;
-        this.pipeBottom.position.x -= this.speed;
+        this.pipeTop.move(this.speed);
+        this.pipeBottom.move(this.speed);
         this.position.x = this.pipeTop.position.x;
     }
 
