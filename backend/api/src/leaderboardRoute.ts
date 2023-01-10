@@ -7,10 +7,16 @@ import {HighscoreLeaderboard, TimeLeaderboard} from "./model/Leaderboard.js";
 
 export const leaderboardRoute = express.Router()
 
-leaderboardRoute.get('/highscore', async (req, res) => {
+leaderboardRoute.get('/highscore',
+    /**
+     * Returns the highscore leaderboard as JSON response, fetched from DB
+     * @param req
+     * @param res json: HighscoreLeaderboard
+     */
+    async (req, res) => {
     try {
-        const highscoreLeaderboardManager: HighscoreLeaderboardRepository = new HighscoreLeaderboardPgPromiseRepository;
-        const highscoreLeaderboard: HighscoreLeaderboard = await highscoreLeaderboardManager.getAll();
+        const highscoreLeaderboardRepo: HighscoreLeaderboardRepository = new HighscoreLeaderboardPgPromiseRepository;
+        const highscoreLeaderboard: HighscoreLeaderboard = await highscoreLeaderboardRepo.getAll();
         res.send(highscoreLeaderboard);
     } catch (error) {
         // handle errors
@@ -19,10 +25,16 @@ leaderboardRoute.get('/highscore', async (req, res) => {
     }
 })
 
-leaderboardRoute.get('/totalplaytime', async (req, res) => {
+leaderboardRoute.get('/totalplaytime',
+    /**
+     * Returns the total playtime leaderboard as JSON response, fetched from DB
+     * @param req
+     * @param res json: TimeLeaderboard
+     */
+    async (req, res) => {
     try {
-        const timeLeaderboardManager: TimeLeaderboardRepository = new TimeLeaderboardPgPromiseRepository;
-        const timeLeaderboard: TimeLeaderboard = await timeLeaderboardManager.getAll();
+        const timeLeaderboardRepo: TimeLeaderboardRepository = new TimeLeaderboardPgPromiseRepository;
+        const timeLeaderboard: TimeLeaderboard = await timeLeaderboardRepo.getAll();
         res.send(timeLeaderboard);
     } catch (error) {
         // handle errors
