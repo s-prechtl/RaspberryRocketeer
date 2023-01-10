@@ -1,11 +1,15 @@
 class Obstacle extends Entity implements Collidable {
     private pipeTop: Pipe;
     private pipeBottom: Pipe;
+    private static _distanceBetweenPipes: number;
     private readonly padding: number = 150;
     private readonly speed: number = 3;
 
-    public static distanceBetweenPipes: number;
-    public static startX: number;
+    private static startX: number;
+
+    static set distanceBetweenPipes(value: number) {
+        this._distanceBetweenPipes = value;
+    }
 
     /**
      * Constructs the Obstacle with the given image
