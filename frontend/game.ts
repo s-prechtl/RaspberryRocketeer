@@ -1,4 +1,3 @@
-// TODO: Refactor
 const PIPE_IMAGE_PATH: string = "resources/raspberry-low-res.png";
 const BACKGROUND_IMAGE_PATH: string = "resources/raspberry-low-res.png";
 const RASPBERRY_IMAGE_PATH: string = "resources/raspberry-rocket.png";
@@ -12,11 +11,15 @@ let paused: boolean;
 let score: number;
 let hasAlreadyScored: boolean;
 
+/**
+ * p5 setup function.
+ */
 function setup() {
     backgroundImage = loadImage(BACKGROUND_IMAGE_PATH);
     createCanvas(2000, 1000);
     obstacleOffset = width / 3;
-    
+    Obstacle.distanceBetweenPipes = height / 2.5
+
     textSize(150);
     textFont("resources/PressStart2P-Regular.ttf");
 
@@ -24,11 +27,10 @@ function setup() {
 }
 
 /**
- * Sets up everything needed for the game
+ * Sets up everything needed for the game.
  */
 function setupGame() {
     paused = true;
-
     score = 0;
     raspberry = new Raspberry();
     raspberry.image = RASPBERRY_IMAGE_PATH;
@@ -48,24 +50,14 @@ function setupGame() {
     obstacles.forEach((obstacle) => obstacle.randomizeHeight());
 }
 
-// TODO: Split into funciton
+/**
+ * Draws and updates the game.
+ */
 function draw() {
-    background(backgroundImage)
-    if (!paused) {
-        raspberry.update();
-    }
+    update();
+    background(backgroundImage);
     raspberry.draw();
-    
-    // Reset Obstacles Position
-    obstacles.forEach((obstacle) => {
-        if (!paused) {
-            obstacle.update();
-            checkObstacleReset(obstacle);
-        }
-
-        obstacle.draw();
-    });
-
+    drawObstacles();
     // Check for collisions with pipes and set score
     if (!paused) {
         if (obstacles[0].collides(raspberry)) {
@@ -74,12 +66,44 @@ function draw() {
         checkRaspberryScore();
         obstacles[0].draw();
     }
-    
+    displayScore();
+}
+
+/**
+ * Displays the game score.
+ */
+function displayScore(){
     push();
     fill(200, 100, 60);
     text(score, width / 2, height / 10, width, height);
     pop();
 }
+
+/**
+ * Updates all objects.
+ */
+function update() {
+    if (!paused) {
+        raspberry.update();
+    }
+    obstacles.forEach((obstacle: Obstacle) => {
+        if (!paused) {
+            obstacle.update();
+            // Reset Obstacles Position
+            checkObstacleReset(obstacle);
+        }
+    })
+}
+
+/**
+ * Draws the obstacles.
+ */
+function drawObstacles() {
+    obstacles.forEach((obstacle) => {
+        obstacle.draw();
+    });
+}
+
 
 /**
  * Check if obstacle positions should be reset and reset if so
@@ -105,12 +129,15 @@ function checkRaspberryScore() {
     }
 }
 
+/**
+ * Handler for key events.
+ */
 function keyPressed() {
     // Jump
     if (key.toLowerCase() == "k") {
         raspberry.boost();
     }
-    
+
     // Pause the Game
     if (key == "Escape") {
         paused = !paused;
