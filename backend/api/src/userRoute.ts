@@ -1,20 +1,32 @@
 import express from "express";
-import { body, param, validationResult } from 'express-validator';
+import {body, param, validationResult} from 'express-validator';
 import {UserScoresPgPromiseRepository} from "./repositories/pgPromise/UserScoresPgPromiseRepository.js";
 import {UserPgPromiseRepository} from "./repositories/pgPromise/UserPgPromiseRepository.js";
 import {UserRepository} from "./repositories/UserRepository.js";
 import {UserScoresRepository} from "./repositories/UserScoresRepository.js";
 import {User} from "./model/User.js";
+import {USERNAME_VALIDATION_REGEX, userWithIdExists, userWithNameDoesNotExists} from "./validators.js";
 
 export const userRoute = express.Router()
 userRoute.use(express.json())
+
 
 userRoute.post(
     '/register',
     body('name')
         .isString()
         .isLength({min: 3, max: 32})
-        .matches('[a-zA-Z0-9_.\\- ]*'),
+        .matches(USERNAME_VALIDATION_REGEX)
+        .custom(userWithNameDoesNotExists),
+    /**
+     * After processing the errors of express-validator, inserts the user into DB
+     * Returns the inserted user
+     * @param req
+     * body {
+     *     name: string
+     * }
+     * @param res json: User
+     */
     async (req, res) => {
         try {
             //region validate parameters
@@ -24,14 +36,10 @@ userRoute.post(
             }
             //endregion
             const username: string = req.body.name;
-            const userManager: UserRepository = new UserPgPromiseRepository();
+            const userRepo: UserRepository = new UserPgPromiseRepository();
 
-            // check if username already exists
-            if (await userManager.withNameExists(username)) {
-                return res.status(400).json({ errors: [{msg: `User with name '${username}' already exists.`}] })
-            }
             // insert & return user
-            const inserted: User = await userManager.insert({name: username});
+            const inserted: User = await userRepo.insert({name: username});
             res.json(inserted);
         } catch (error) {
             // handle errors
@@ -42,8 +50,18 @@ userRoute.post(
 )
 
 userRoute.get('/:userId/scores',
-    // TODO: With id exists --> cusotm validator
-    param('userId').isInt({min: 1}),
+    param('userId')
+        .isInt({min: 1})
+        .custom(userWithIdExists),
+    /**
+     * After processing the errors of express-validator, fetches the scores from the DB
+     * Returns user scores
+     * @param req
+     * params {
+     *      userId: number
+     * }
+     * @param res json: UserScores
+     */
     async (req, res) => {
         //region validate parameters
         const errors = validationResult(req);
@@ -53,16 +71,11 @@ userRoute.get('/:userId/scores',
         //endregion
 
         const userId: number = req.params.userId;
-        const userManager: UserRepository = new UserPgPromiseRepository;
 
         try {
-            // check if user with given id exists
-            if (!await userManager.withIdExists(userId)) {
-                return res.status(400).json({ errors: [{msg: `User with id ${userId} does not exist.`}] })
-            }
             // get & return data
-            const userScoresManager: UserScoresRepository = new UserScoresPgPromiseRepository;
-            const userScores = await userScoresManager.getById(userId);
+            const userScoresRepo: UserScoresRepository = new UserScoresPgPromiseRepository;
+            const userScores = await userScoresRepo.getById(userId);
             res.json(userScores);
         } catch (error) {
             // handle errors

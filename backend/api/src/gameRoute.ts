@@ -2,34 +2,32 @@ import express from "express";
 import {GameRepository} from "./repositories/GameRepository.js";
 import {GamePgPromiseRepository} from "./repositories/pgPromise/GamePgPromiseRepository.js";
 import {Game} from "./model/Game.js";
-import {body, CustomValidator, validationResult} from "express-validator";
-import {UserRepository} from "./repositories/UserRepository.js";
-import {UserPgPromiseRepository} from "./repositories/pgPromise/UserPgPromiseRepository.js";
+import {body, validationResult} from "express-validator";
+import {TIME_VALIDATION_REGEX, userWithIdExists} from "./validators.js";
 
 export const gameRoute = express.Router()
 
 gameRoute.use(express.json())
 
-const userWithIdExists: CustomValidator = userId => {
-    try {
-        const userRepo: UserRepository = new UserPgPromiseRepository;
-        return userRepo.withIdExists(userId).then(exists => {
-            if (!exists) return Promise.reject("User does not exist");
-        });
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 gameRoute.post(
     '/add',
     body('playtime')
-        .matches("([0-5]\\d:)?[0-5]\\d:[0-5]\\d"),
+        .matches(TIME_VALIDATION_REGEX),
     body('date')
         .isDate(),
     body('userId')
         .isInt({min: 1})
         .custom(userWithIdExists),
+    /**
+     * After processing the errors of express-validator, inserts the game into the DB
+     * @param req
+     * body {
+     *     playtime: string,
+     *     date: Date,
+     *     userId: int
+     * }
+     * @param res json: Game
+     */
     async (req, res) => {
     try {
         //region validate parameters
