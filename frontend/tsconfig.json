@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "module": "none",
     "noImplicitAny": true,
     "outFile": "./build/build.js",
     "preserveConstEnums": true,
@@ -8,6 +7,11 @@
     "rootDir": ".",
     "sourceMap": true,
     "target": "es5",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "lib": [
+      "dom",
+      "es5",
+      "scripthost"
+    ]
   }
 }
