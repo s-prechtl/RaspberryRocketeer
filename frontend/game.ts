@@ -1,3 +1,4 @@
+// TODO: Refactor
 const pipeImagePath: string = "resources/raspberry-low-res.png";
 const obstacleWidth: number = 88;
 let obstacleOffset: number;
@@ -33,6 +34,7 @@ function setupGame() {
     raspberry.image = raspberryImagePath;
 
     // Create all obstacles
+    // TODO: Loop
     obstacles = [];
     obstacles.push(new Obstacle(
         new Position(width, 0),
@@ -57,6 +59,7 @@ function setupGame() {
     obstacles.forEach((obstacle) => obstacle.randomizeHeight());
 }
 
+// TODO: Split into funciton
 function draw() {
     background(backgroundImage)
     if (!paused) {

@@ -28,6 +28,7 @@ class Raspberry extends Entity {
      * Constructs the Raspberry with fixed sizes
      */
     constructor() {
+        // TODO: Move literals to consta
         super(new Position(width / 6, height / 2), 180, 70, 0);
     }
 

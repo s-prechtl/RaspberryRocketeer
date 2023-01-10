@@ -42,6 +42,7 @@ userRoute.post(
 )
 
 userRoute.get('/:userId/scores',
+    // TODO: With id exists --> cusotm validator
     param('userId').isInt({min: 1}),
     async (req, res) => {
         //region validate parameters
