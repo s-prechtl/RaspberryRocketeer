@@ -8,8 +8,9 @@ let backgroundImage: any;
 let obstacles: Obstacle[] = [];
 let raspberry: Raspberry;
 let paused: boolean;
-let score: number;
-let hasAlreadyScored: boolean;
+let score: number = 0;
+let hasAlreadyScored: boolean = false;
+let hasDied: boolean = false;
 
 /**
  * p5 setup function.
@@ -32,8 +33,6 @@ function setup() {
  */
 function setupGame() {
     paused = true;
-    score = 0;
-    hasAlreadyScored = false;
     raspberry = new Raspberry(RASPBERRY_IMAGE_PATH);
 
     Obstacle.distanceBetweenPipes = height / 2.5;
@@ -65,6 +64,7 @@ function draw() {
     // Check for collisions with pipes and set score
     if (!paused) {
         if (obstacles[0].collides(raspberry)) {
+            hasDied = true;
             setupGame();
         }
         checkRaspberryScore();
@@ -134,11 +134,23 @@ function checkRaspberryScore() {
 }
 
 /**
+ * Resets the score if game is started
+ */
+function resetScore(): void {
+    if(hasDied){
+        hasDied = false;
+        score = 0;
+        hasAlreadyScored = false;
+    }
+}
+
+/**
  * Handler for key events.
  */
-function keyPressed() {
+function keyPressed() {    
     // Jump
     if (key.toLowerCase() == "k") {
+        resetScore();
         raspberry.boost();
     }
 
