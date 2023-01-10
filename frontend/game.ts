@@ -1,10 +1,10 @@
 // TODO: Refactor
-const pipeImagePath: string = "resources/raspberry-low-res.png";
-const obstacleWidth: number = 88;
+const PIPE_IMAGE_PATH: string = "resources/raspberry-low-res.png";
+const BACKGROUND_IMAGE_PATH: string = "resources/raspberry-low-res.png";
+const RASPBERRY_IMAGE_PATH: string = "resources/raspberry-rocket.png";
+const OBSTACLE_WIDTH: number = 88;
 let obstacleOffset: number;
-const backgroundImagePath: string = "resources/raspberry-low-res.png";
 let backgroundImage: any;
-const raspberryImagePath: string = "resources/raspberry-rocket.png";
 
 let obstacles: Obstacle[] = [];
 let raspberry: Raspberry;
@@ -13,12 +13,12 @@ let score: number;
 let hasAlreadyScored: boolean;
 
 function setup() {
-    backgroundImage = loadImage(backgroundImagePath);
+    backgroundImage = loadImage(BACKGROUND_IMAGE_PATH);
     createCanvas(2000, 1000);
     obstacleOffset = width / 3;
     
     textSize(150);
-    textFont("resources/JetBrains-Mono-Regular.ttf");
+    textFont("resources/PressStart2P-Regular.ttf");
 
     setupGame();
 }
@@ -31,29 +31,18 @@ function setupGame() {
 
     score = 0;
     raspberry = new Raspberry();
-    raspberry.image = raspberryImagePath;
+    raspberry.image = RASPBERRY_IMAGE_PATH;
 
     // Create all obstacles
-    // TODO: Loop
     obstacles = [];
-    obstacles.push(new Obstacle(
-        new Position(width, 0),
-        obstacleWidth,
-        height,
-        pipeImagePath,
-    ));
-    obstacles.push(new Obstacle(
-        new Position(width + obstacleOffset, 0),
-        obstacleWidth,
-        height,
-        pipeImagePath,
-    ));
-    obstacles.push(new Obstacle(
-        new Position(width + obstacleOffset * 2, 0),
-        obstacleWidth,
-        height,
-        pipeImagePath,
-    ));
+    for (let i = 0; i < 3; i++) {
+        obstacles.push(new Obstacle(
+            new Position(width + obstacleOffset * i, 0),
+            OBSTACLE_WIDTH,
+            height,
+            PIPE_IMAGE_PATH,
+        ));
+    }
 
     // Randomize position of all Obstacles
     obstacles.forEach((obstacle) => obstacle.randomizeHeight());
@@ -97,7 +86,7 @@ function draw() {
  * @param obstacle obstacle to check
  */
 function checkObstacleReset(obstacle: Obstacle) {
-    if (obstacle.position.x < -obstacleWidth) {
+    if (obstacle.position.x < -OBSTACLE_WIDTH) {
         obstacle.resetPosition();
         obstacles.shift();
         obstacles.push(obstacle);
