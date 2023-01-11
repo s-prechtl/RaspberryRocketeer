@@ -2,6 +2,7 @@ const PIPE_IMAGE_PATH: string = "resources/raspberry-low-res.png";
 const BACKGROUND_IMAGE_PATH: string = "resources/raspberry-low-res.png";
 const RASPBERRY_IMAGE_PATH: string = "resources/raspberry-rocket.png";
 const OBSTACLE_WIDTH: number = 88;
+const OBSTACLE_COUNT: number = 3;
 let obstacleOffset: number;
 let backgroundImage: any;
 
@@ -28,7 +29,7 @@ function setup() {
  * Sets up the constants needed for the game.
  */
 function setupObstacleConsts() {
-    obstacleOffset = width / 3;
+    obstacleOffset = width / OBSTACLE_COUNT;
     Obstacle.distanceBetweenPipes = height / 2.5
     Obstacle.startX = width;
 }
@@ -55,11 +56,19 @@ function setupGame() {
  */
 function setupObstacles() {
     obstacles = [];
-    for (let i = 0; i < 3; i++) {
+    instantiateObstacles(OBSTACLE_COUNT);
+    obstacles.forEach((obstacle) => obstacle.randomizeHeight());
+}
+
+/**
+ * Instantiates a certain amount of obstacles.
+ * @param number
+ */
+function instantiateObstacles(number: number) {
+    for (let i = 0; i < number; i++) {
         obstacles.push(
             new Obstacle(new Position(width + obstacleOffset * i, 0), OBSTACLE_WIDTH, height, PIPE_IMAGE_PATH));
     }
-    obstacles.forEach((obstacle) => obstacle.randomizeHeight());
 }
 
 /**
@@ -95,7 +104,6 @@ function gameLoop() {
     if (!paused) {
         collisionCheck(obstacles[0]);
         checkRaspberryScore();
-        obstacles[0].draw();
     }
 }
 
