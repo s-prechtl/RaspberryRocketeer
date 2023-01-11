@@ -3,6 +3,7 @@ const BACKGROUND_IMAGE_PATH: string = "resources/raspberry-low-res.png";
 const RASPBERRY_IMAGE_PATH: string = "resources/raspberry-rocket.png";
 const OBSTACLE_WIDTH: number = 88;
 const OBSTACLE_COUNT: number = 3;
+const BOOST_KEYS = ["k", " "];
 let obstacleOffset: number;
 let backgroundImage: any;
 
@@ -39,7 +40,7 @@ function setupObstacleConsts() {
  */
 function setupFont() {
     textSize(150);
-    textFont("resources/PressStart2P-Regular.ttf");
+    textFont(loadFont("resources/PressStart2P-Regular.ttf"));
 }
 
 /**
@@ -204,7 +205,7 @@ function resetScore(): void {
 function keyPressed() {
     if (!ready) return;
     // Jump
-    if (key.toLowerCase() == "k") {
+    if (BOOST_KEYS.includes(key.toLowerCase())) {
         resetScore();
         raspberry.boost();
     }
