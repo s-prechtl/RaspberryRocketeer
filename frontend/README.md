@@ -26,6 +26,7 @@ class Obstacle {
    number speed
    number _distanceBetweenPipes
    number _startX
+   createPipes(position: Position, obstacleHeight: number, obstacleWidth: number, pipeImagePath: string) void
    resetPosition() void
    randomizeHeight() void
    randomRange(min: number, max: number) number
@@ -36,13 +37,13 @@ class Obstacle {
    any distanceBetweenPipes
 }
 class Pipe {
-   constructor(positionX: number, width: number, height: number) 
-   any _image
+   constructor(positionX: number, width: number, height: number, image: string) 
+   p5.Image _image
    update() void
    draw() void
    move(speed: number) void
    collides(o: Entity) boolean
-   any image
+   p5.Image image
 }
 class Position {
    constructor(x: number, y: number) 
@@ -56,7 +57,7 @@ class Raspberry {
    number lift
    number gravity
    number _velocity
-   any _image
+   p5.Image _image
    Position position
    number maxVelocity
    number WIDTH
@@ -65,10 +66,16 @@ class Raspberry {
    update() void
    applyGravity() void
    forceBoundaries() void
+   boundaryTop() void
+   boundaryBottom() void
    boost() void
    draw() void
+   drawObject() void
+   drawRocket() void
+   drawHitBox() void
+   setPose() void
    number velocity
-   any image
+   p5.Image image
 }
 
 Obstacle  ..>  Collidable 
