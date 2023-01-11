@@ -202,18 +202,18 @@ function resetScore(): void {
 /**
  * Handler for key events.
  */
-function keyPressed() {
-    if (!ready) return;
-    // Jump
-    if (BOOST_KEYS.includes(key.toLowerCase())) {
-        resetScore();
-        raspberry.boost();
-    }
-
-    // Pause the Game
-    if (key == "Escape") {
-        paused = !paused;
-    } else if (paused) {
-        paused = false;
-    }
-}
+// function keyPressed() {
+//     if (!ready) return;
+//     // Jump
+//     if (BOOST_KEYS.includes(key.toLowerCase())) {
+//         resetScore();
+//         raspberry.boost();
+//     }
+//
+//     // Pause the Game
+//     if (key == "Escape") {
+//         paused = !paused;
+//     } else if (paused) {
+//         paused = false;
+//     }
+// }
