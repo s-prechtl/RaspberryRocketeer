@@ -1,15 +1,28 @@
 {
+  "name": "raspberryrocketeer",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "run-p start-compile start-run",
-    "start-compile": "tsc --watch",
-    "start-run": "browser-sync start --server -w"
+    "serve": "vue-cli-service serve",
+    "build": "npm run build-game && vue-cli-service build",
+    "build-game": "tsc -p ./game",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@types/p5": "^1.4.3",
-    "browser-sync": "^2.27.10",
-    "npm-run-all": "^4.1.5",
+    "bootstrap": "^5.2.3",
     "p5": "^1.5.0",
-    "typedoc": "^0.23.24"
+    "vue": "^3.2.13"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-typescript": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/eslint-config-typescript": "^9.1.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "typescript": "~4.5.5"
   }
 }

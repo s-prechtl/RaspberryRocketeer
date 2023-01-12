@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "outFile": "../public/game/build.js",
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "rootDir": ".",
+    "sourceMap": true,
+    "target": "es5",
+    "moduleResolution": "node",
+    "lib": [
+      "dom",
+      "es5",
+      "scripthost"
+    ]
+  }
+}
