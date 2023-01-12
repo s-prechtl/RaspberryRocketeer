@@ -6,13 +6,13 @@ class Raspberry extends Entity {
      * Amount of lift applied when boosting.
      * @private
      */
-    private readonly lift: number = -20;
+    private readonly lift: number = -15;
 
     /**
      * Gravity applied.
      * @private
      */
-    private readonly gravity: number = 1.314159265358979323846264338;
+    private readonly gravity: number = 0.45;
 
     /**
      * Current speed.
