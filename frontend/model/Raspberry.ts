@@ -36,7 +36,7 @@ class Raspberry extends Entity {
      * Maximum velocity, so the raspberry doesn't get to infinite speed when boosting.
      * @private
      */
-    private static readonly maxVelocity: number = 100;
+    private static readonly maxVelocity: number = 75;
 
     /**
      * Width.
@@ -70,7 +70,7 @@ class Raspberry extends Entity {
      * @param value
      */
     set velocity(value: number) {
-        this._velocity = (Math.abs(this.velocity) > Raspberry.maxVelocity) ? Raspberry.maxVelocity : value;
+        this._velocity = (Math.abs(this.velocity) > Raspberry.maxVelocity) ? -Raspberry.maxVelocity : value;
     }
 
     /**
