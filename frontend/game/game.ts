@@ -20,7 +20,7 @@ let ready: boolean = true;
  */
 function setup() {
     backgroundImage = loadImage(BACKGROUND_IMAGE_PATH);
-    createCanvas(2000, 1000);
+    createCanvas(1200, 750);
     setupObstacleConsts();
     setupFont();
     setupGame();
