@@ -1,11 +1,19 @@
 const PIPE_IMAGE_PATH: string = "resources/raspberry-low-res.png";
 const BACKGROUND_IMAGE_PATH: string = "resources/raspberry-low-res.png";
 const RASPBERRY_IMAGE_PATH: string = "resources/raspberry-rocket.png";
+const FLOOR_IMAGE_PATH: string = "resources/"; //TODO: add image for floor
+const SCROLLING_POSTER_IMAGE_PATHS: string[] = [
+    "resources/rickroll.png",
+    "resources/seesORsoos_sad_no-bg.png",
+    "resources/sw_icon.png"
+];
 const OBSTACLE_WIDTH: number = 88;
 const OBSTACLE_COUNT: number = 3;
+const FLOOR_HEIGHT: number = 200;
 const BOOST_KEYS = ["k", " "];
 let obstacleOffset: number;
 let backgroundImage: any;
+let scrollingPosterImages: p5.Image[] = [];
 
 let obstacles: Obstacle[] = [];
 let raspberry: Raspberry;
@@ -20,10 +28,20 @@ let ready: boolean = true;
  */
 function setup() {
     backgroundImage = loadImage(BACKGROUND_IMAGE_PATH);
+    loadScrollingPosterImages();
     createCanvas(2000, 1000);
     setupObstacleConsts();
     setupFont();
     setupGame();
+}
+
+/**
+ * Loads all scrolling poster images into the `scrollingPosterImages` list
+ */
+function loadScrollingPosterImages(){
+    for (const posterImagePath of SCROLLING_POSTER_IMAGE_PATHS) {
+        scrollingPosterImages.push(loadImage(posterImagePath));
+    }
 }
 
 /**
@@ -40,6 +58,7 @@ function setupObstacleConsts() {
  */
 function setupFont() {
     textSize(150);
+    textAlign(CENTER);
     textFont(loadFont("resources/PressStart2P-Regular.ttf"));
 }
 
@@ -85,9 +104,42 @@ function draw() {
  * Draws the game's elements.
  */
 function drawGame() {
-    background(backgroundImage);
+    drawScenery();
     drawEntities();
     displayScore();
+}
+
+/**
+ * Draws the:
+ * - background
+ * - floor
+ */
+function drawScenery(){
+   background(backgroundImage);
+   drawFloor();
+   drawBackgroundPosters();
+}
+
+/**
+ * Draws the floor with the corresponding image
+ */
+function drawFloor(){
+    push();
+    noFill();
+    //TODO: image
+    // image(loadImage(FLOOR_IMAGE_PATH), 0, height - FLOOR_HEIGHT, width, FLOOR_HEIGHT);
+    rect(0, height - FLOOR_HEIGHT, width, FLOOR_HEIGHT);
+    pop();
+}
+
+function drawBackgroundPosters(){
+    for (const posterImage of scrollingPosterImages){
+        push();
+        noFill();
+        //TODO scroll images and dont load all at once
+        image(posterImage, 0, 0);
+        pop();
+    }
 }
 
 /**
@@ -134,7 +186,7 @@ function die() {
 function displayScore() {
     push();
     fill(200, 100, 60);
-    text(score, width / 2, height / 10, width, height);
+    text(score, 0, height / 10, width, height);
     pop();
 }
 
