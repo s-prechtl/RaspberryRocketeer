@@ -6,33 +6,16 @@ class Pipe extends Entity implements Collidable {
      * Pipe's image.
      * @private
      */
-    private _image: p5.Image;
-
-    //region Getter & Setter
-    /**
-     * Gets the image.
-     */
-    get image(): p5.Image {
-        return this._image;
-    }
-
-    /**
-     * Sets the image.
-     * @param path Path to image
-     */
-    set image(path: any) {
-        this._image = loadImage(path);
-    }
-    //endregion
+    private readonly image: p5.Image;
 
     /**
      * Constructs the pipe.
      * @param positionX starting x-Position
      * @param width pipe width
      * @param height pipe height
-     * @param image path to image.
+     * @param image image object
      */
-    constructor(positionX: number, width: number, height: number, image: string) {
+    constructor(positionX: number, width: number, height: number, image: p5.Image) {
         super(new Position(positionX, 0), width, height, 0);
         this.image = image;
     }
@@ -40,7 +23,8 @@ class Pipe extends Entity implements Collidable {
     /**
      * YAGNI.
      */
-    public update(): void {}
+    public update(): void {
+    }
 
     /**
      * Draws the pipe.
@@ -48,7 +32,19 @@ class Pipe extends Entity implements Collidable {
     public draw(): void {
         push();
         noFill();
-        image(this.image, this.position.x, this.position.y, this.width, this.height);
+
+        if (this.height > this.image.height) {
+            let maxImageYPos = Math.ceil(this.height / this.image.height) * this.image.height;
+            for (let imageYPos = 0; imageYPos < maxImageYPos; imageYPos += this.image.height) {
+                console.log("maximageypos: " + maxImageYPos);
+                console.log("image height: " + this.image.height);
+                console.log("imageypos: " + imageYPos);
+                image(this.image, this.position.x, this.position.y + imageYPos, this.width, this.image.height);
+            }
+        } else {
+            image(this.image, this.position.x, this.position.y, this.width, this.height);
+        }
+
         rect(this.position.x, this.position.y, this.width, this.height);
         pop();
     }

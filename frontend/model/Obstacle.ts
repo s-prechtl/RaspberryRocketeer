@@ -23,11 +23,11 @@ class Obstacle extends Entity implements Collidable {
      * @param position starting position of the obstacle
      * @param obstacleWidth width of the obstacle
      * @param obstacleHeight height of the obstacle
-     * @param pipeImagePath path to the image to be used
+     * @param image the image to be used
      */
-    constructor(position: Position, obstacleWidth: number, obstacleHeight: number, pipeImagePath: string) {
+    constructor(position: Position, obstacleWidth: number, obstacleHeight: number, image: p5.Image) {
         super(position, obstacleWidth, obstacleHeight, 0);
-        this.createPipes(position, obstacleHeight, obstacleWidth, pipeImagePath);
+        this.createPipes(position, obstacleHeight, obstacleWidth, image);
     }
 
     /**
@@ -35,12 +35,12 @@ class Obstacle extends Entity implements Collidable {
      * @param position
      * @param obstacleHeight
      * @param obstacleWidth
-     * @param pipeImagePath
+     * @param pipeImage
      * @private
      */
-    private createPipes(position: Position, obstacleHeight: number, obstacleWidth: number, pipeImagePath: string) {
-        this.pipeTop = new Pipe(position.x, obstacleWidth, obstacleHeight, pipeImagePath);
-        this.pipeBottom = new Pipe(position.x, obstacleWidth, obstacleHeight, pipeImagePath);
+    private createPipes(position: Position, obstacleHeight: number, obstacleWidth: number, pipeImage: p5.Image) {
+        this.pipeTop = new Pipe(position.x, obstacleWidth, obstacleHeight, pipeImage);
+        this.pipeBottom = new Pipe(position.x, obstacleWidth, obstacleHeight, pipeImage);
     }
 
     /**

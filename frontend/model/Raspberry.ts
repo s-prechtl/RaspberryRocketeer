@@ -56,6 +56,12 @@ class Raspberry extends Entity {
      */
     private static readonly FILL: number = 0;
 
+    /**
+     * Offset off of the floor so that the raspberry looks like it's falling on the floor
+     * @private
+     */
+    private static BOTTOM_FLOOR_OFFSET: number;
+
     //region Getter & Setter
 
     /**
@@ -97,6 +103,7 @@ class Raspberry extends Entity {
     constructor(image: string) {
         Raspberry.position = new Position(width / 6, height / 2);
         super(Raspberry.position, Raspberry.WIDTH, Raspberry.HEIGHT, Raspberry.FILL);
+        Raspberry.BOTTOM_FLOOR_OFFSET = (height / 5) - (height / 15 / 2);
         this.image = image;
     }
 
@@ -117,7 +124,7 @@ class Raspberry extends Entity {
     }
 
     /**
-     * Limits the raspberry's movement to the shown canvas.
+     * Limits the Raspberry's movement to the shown canvas.
      * @private
      */
     private forceBoundaries(): void {
@@ -141,8 +148,8 @@ class Raspberry extends Entity {
      * @private
      */
     private boundaryBottom(): void {
-        if (this.position.y + this.height > height) {
-            this.position.y = height - this.height;
+        if (this.position.y + this.height + Raspberry.BOTTOM_FLOOR_OFFSET > height) {
+            this.position.y = height - this.height - Raspberry.BOTTOM_FLOOR_OFFSET;
             this.velocity = 0;
         }
     }

@@ -1,19 +1,17 @@
-const PIPE_IMAGE_PATH: string = "resources/raspberry-low-res.png";
+const PIPE_IMAGE_PATH: string = "resources/seesORsoos_sad_no-bg.png";
 const BACKGROUND_IMAGE_PATH: string = "resources/raspberry-low-res.png";
 const RASPBERRY_IMAGE_PATH: string = "resources/raspberry-rocket.png";
-const FLOOR_IMAGE_PATH: string = "resources/"; //TODO: add image for floor
-const SCROLLING_POSTER_IMAGE_PATHS: string[] = [
-    "resources/rickroll.png",
-    "resources/seesORsoos_sad_no-bg.png",
-    "resources/sw_icon.png"
-];
+const FLOOR_IMAGE_PATH: string = "resources/table-min-min.png";
+const FONT_PATH: string = "resources/PressStart2P-Regular.ttf";
 const OBSTACLE_WIDTH: number = 88;
 const OBSTACLE_COUNT: number = 3;
-const FLOOR_HEIGHT: number = 200;
 const BOOST_KEYS = ["k", " "];
+let floorHeight: number;
 let obstacleOffset: number;
-let backgroundImage: any;
-let scrollingPosterImages: p5.Image[] = [];
+let font: p5.Font;
+let backgroundImage: p5.Image;
+let pipeImage: p5.Image;
+let floorImage: p5.Image;
 
 let obstacles: Obstacle[] = [];
 let raspberry: Raspberry;
@@ -24,24 +22,24 @@ let hasDied: boolean = false;
 let ready: boolean = true;
 
 /**
- * p5 setup function.
+ * p5 preload function
  */
-function setup() {
+function preload() {
+    font = loadFont(FONT_PATH);
     backgroundImage = loadImage(BACKGROUND_IMAGE_PATH);
-    loadScrollingPosterImages();
-    createCanvas(2000, 1000);
-    setupObstacleConsts();
-    setupFont();
-    setupGame();
+    pipeImage = loadImage(PIPE_IMAGE_PATH);
+    floorImage = loadImage(FLOOR_IMAGE_PATH);
 }
 
 /**
- * Loads all scrolling poster images into the `scrollingPosterImages` list
+ * p5 setup function.
  */
-function loadScrollingPosterImages(){
-    for (const posterImagePath of SCROLLING_POSTER_IMAGE_PATHS) {
-        scrollingPosterImages.push(loadImage(posterImagePath));
-    }
+function setup() {
+    createCanvas(2000, 1000);
+    floorHeight = height / 5;
+    setupObstacleConsts();
+    setupFont();
+    setupGame();
 }
 
 /**
@@ -59,7 +57,7 @@ function setupObstacleConsts() {
 function setupFont() {
     textSize(150);
     textAlign(CENTER);
-    textFont(loadFont("resources/PressStart2P-Regular.ttf"));
+    textFont(font);
 }
 
 /**
@@ -87,7 +85,7 @@ function setupObstacles() {
 function instantiateObstacles(number: number) {
     for (let i = 0; i < number; i++) {
         obstacles.push(
-            new Obstacle(new Position(width + obstacleOffset * i, 0), OBSTACLE_WIDTH, height, PIPE_IMAGE_PATH));
+            new Obstacle(new Position(width + obstacleOffset * i, 0), OBSTACLE_WIDTH, height, pipeImage));
     }
 }
 
@@ -117,7 +115,6 @@ function drawGame() {
 function drawScenery(){
    background(backgroundImage);
    drawFloor();
-   drawBackgroundPosters();
 }
 
 /**
@@ -126,20 +123,9 @@ function drawScenery(){
 function drawFloor(){
     push();
     noFill();
-    //TODO: image
-    // image(loadImage(FLOOR_IMAGE_PATH), 0, height - FLOOR_HEIGHT, width, FLOOR_HEIGHT);
-    rect(0, height - FLOOR_HEIGHT, width, FLOOR_HEIGHT);
+    image(floorImage, 0, height - floorHeight, width, floorHeight);
+    rect(0, height - floorHeight, width, floorHeight);
     pop();
-}
-
-function drawBackgroundPosters(){
-    for (const posterImage of scrollingPosterImages){
-        push();
-        noFill();
-        //TODO scroll images and dont load all at once
-        image(posterImage, 0, 0);
-        pop();
-    }
 }
 
 /**
@@ -148,6 +134,15 @@ function drawBackgroundPosters(){
 function drawEntities() {
     raspberry.draw();
     drawObstacles();
+}
+
+/**
+ * Draws the obstacles.
+ */
+function drawObstacles() {
+    obstacles.forEach((obstacle) => {
+        obstacle.draw();
+    });
 }
 
 /**
@@ -205,16 +200,6 @@ function update() {
         }
     })
 }
-
-/**
- * Draws the obstacles.
- */
-function drawObstacles() {
-    obstacles.forEach((obstacle) => {
-        obstacle.draw();
-    });
-}
-
 
 /**
  * Check if obstacle positions should be reset and reset if so
