@@ -206,8 +206,7 @@ function keyPressed() {
     if (!ready) return;
     // Jump
     if (BOOST_KEYS.includes(key.toLowerCase())) {
-        resetScore();
-        raspberry.boost();
+       playerInput();
     }
 
     // Pause the Game
@@ -216,4 +215,25 @@ function keyPressed() {
     } else if (paused) {
         paused = false;
     }
+}
+
+/**
+ * Mouse clicked event.
+ */
+function mouseClicked() {
+    if (!ready) return;
+
+    if (paused) {
+        paused = false;
+    }
+
+    playerInput();
+}
+
+/**
+ * Handles input for the player, when a key is pressed, or the mouse is clicked.
+ */
+function playerInput() {
+    resetScore();
+    raspberry.boost();
 }
