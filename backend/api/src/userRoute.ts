@@ -84,3 +84,30 @@ userRoute.get('/:userId/scores',
         }
     }
 )
+
+userRoute.get('/:name',
+    param('name')
+        .isString()
+        .isLength({min: 3, max: 32})
+        .matches(USERNAME_VALIDATION_REGEX),
+
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const name: string = req.params.name;
+        console.log(name)
+
+        try {
+            // get & return data
+            const userRepo: UserPgPromiseRepository = new UserPgPromiseRepository();
+            const user = await userRepo.getByName(name);
+            res.json(user);
+        } catch (error) {
+            // handle errors
+            console.log(error)
+            res.status(500).json({ errors: [{msg: "Internal server error"}]})
+        }
+    })

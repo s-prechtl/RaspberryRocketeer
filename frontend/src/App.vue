@@ -7,8 +7,10 @@
       <UserScores :userScores="userScores" ></UserScores>
     </div>
     <div class="row">
-      <Game class="col">
+      <Game v-if="user" class="col">
       </Game>
+      <Login v-else @userChange="(user) => this.user = user">
+      </Login>
     </div>
     <div class="row">
       <div class="col">
@@ -30,10 +32,13 @@ import Header from './components/Header.vue';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+import Login from "@/components/Login.vue";
+import {User} from "@/model/User";
 
 export default defineComponent({
   name: 'App',
   components: {
+    Login,
     UserScores,
     Leaderboard,
     Game,
@@ -45,6 +50,7 @@ export default defineComponent({
       higscoreLeaderboard: [],
       totalPlaytimeLeaderboard: [],
       userId: 1,
+      user: null,
     }
   },
   methods: {
