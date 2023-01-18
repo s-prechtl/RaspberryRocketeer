@@ -9,7 +9,7 @@
     <div class="row">
       <Game v-if="user" class="col">
       </Game>
-      <Login v-else @userChange="(user) => this.user = user">
+      <Login v-else @userChange="(event) => this.user = event">
       </Login>
     </div>
     <div class="row">
