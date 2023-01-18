@@ -1,5 +1,5 @@
-const PIPE_IMAGE_PATH: string = "resources/seesORsoos_sad_no-bg.png";
-const BACKGROUND_IMAGE_PATH: string = "resources/raspberry-low-res.png";
+const PIPE_IMAGE_PATH: string = "resources/dell-pc-min-min-small.png";
+const BACKGROUND_IMAGE_PATH: string = "resources/htl-steyr-front.jpg";
 const RASPBERRY_IMAGE_PATH: string = "resources/raspberry-rocket.png";
 const FLOOR_IMAGE_PATH: string = "resources/table-min-min.png";
 const FONT_PATH: string = "resources/PressStart2P-Regular.ttf";
@@ -85,7 +85,8 @@ function setupObstacles() {
 function instantiateObstacles(number: number) {
     for (let i = 0; i < number; i++) {
         obstacles.push(
-            new Obstacle(new Position(width + obstacleOffset * i, 0), OBSTACLE_WIDTH, height, pipeImage));
+            new Obstacle(new Position(width + obstacleOffset * i, 0), OBSTACLE_WIDTH, height, pipeImage)
+        );
     }
 }
 
@@ -180,7 +181,7 @@ function die() {
  */
 function displayScore() {
     push();
-    fill(200, 100, 60);
+    fill(195, 33, 34);
     text(score, 0, height / 10, width, height);
     pop();
 }

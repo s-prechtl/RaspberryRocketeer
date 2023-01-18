@@ -33,20 +33,47 @@ class Pipe extends Entity implements Collidable {
         push();
         noFill();
 
-        if (this.height > this.image.height) {
-            let maxImageYPos = Math.ceil(this.height / this.image.height) * this.image.height;
-            for (let imageYPos = 0; imageYPos < maxImageYPos; imageYPos += this.image.height) {
-                console.log("maximageypos: " + maxImageYPos);
-                console.log("image height: " + this.image.height);
-                console.log("imageypos: " + imageYPos);
-                image(this.image, this.position.x, this.position.y + imageYPos, this.width, this.image.height);
+        let imageAspectRatio = this.image.height / this.image.width;
+        let computedImageHeight = imageAspectRatio * this.width;
+        this.drawImage(computedImageHeight, imageAspectRatio); 
+
+        rect(this.position.x, this.position.y, this.width, this.height);
+        pop();
+    }
+
+    /**
+     * Draws the image of the pipe into it (tiling and not stretching)
+     * @param computedImageHeight image height on screen
+     * @param imageAspectRatio aspect ratio of the image
+     * @private
+     */
+    private drawImage(computedImageHeight: number, imageAspectRatio: number): void {
+        if (this.height > computedImageHeight) {
+            let maxImageYPos = Math.ceil(this.height / computedImageHeight) * computedImageHeight;
+            for (let imageYPosition = 0; imageYPosition < maxImageYPos; imageYPosition += computedImageHeight) {
+                if(imageYPosition + computedImageHeight >= maxImageYPos) {
+                    this.cropLastImage(imageYPosition, computedImageHeight, imageAspectRatio);
+                    break;
+                }
+                image(this.image, this.position.x, this.position.y + imageYPosition, this.width, computedImageHeight);
             }
         } else {
             image(this.image, this.position.x, this.position.y, this.width, this.height);
         }
+    }
 
-        rect(this.position.x, this.position.y, this.width, this.height);
-        pop();
+    /**
+     * Crops the last image in the pipe so that is doesn't get stretched or compressed
+     * @param imageYPosition y-Position of the image
+     * @param computedImageHeight image height on screen
+     * @param imageAspectRatio aspect ratio of the image
+     * @private
+     */
+    private cropLastImage(imageYPosition: number, computedImageHeight: number, imageAspectRatio: number): void {
+        let amountOfImages = Math.floor(imageYPosition / computedImageHeight);
+        let heightToEdge = this.height - (amountOfImages * computedImageHeight);
+        let croppedImage = this.image.get(0, 0, this.image.width, this.image.height - (heightToEdge * imageAspectRatio));
+        image(croppedImage, this.position.x, this.position.y + imageYPosition, this.width, heightToEdge);
     }
 
     /**
