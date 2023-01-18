@@ -130,7 +130,7 @@ function drawFloor(){
 }
 
 /**
- * Draws the game's enities.
+ * Draws the game's entities.
  */
 function drawEntities() {
     raspberry.draw();
