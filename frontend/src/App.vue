@@ -42,8 +42,6 @@ export default defineComponent({
   data() {
     return {
       userScores: {},
-      highscoreLeaderboard: [],
-      totalPlaytimeLeaderboard: [],
       userId: 1,
     }
   },
