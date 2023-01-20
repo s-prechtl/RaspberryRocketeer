@@ -3,22 +3,24 @@ const BACKGROUND_IMAGE_PATH: string = "resources/htl-steyr-front.jpg";
 const RASPBERRY_IMAGE_PATH: string = "resources/raspberry-rocket.png";
 const FLOOR_IMAGE_PATH: string = "resources/table-min-min.png";
 const FONT_PATH: string = "resources/PressStart2P-Regular.ttf";
-const OBSTACLE_WIDTH: number = 88;
 const OBSTACLE_COUNT: number = 3;
 const BOOST_KEYS = ["k", " "];
 let floorHeight: number;
+let obstacleWidth: number;
 let obstacleOffset: number;
-let font: p5.Font;
 let backgroundImage: p5.Image;
 let pipeImage: p5.Image;
 let floorImage: p5.Image;
+let font: p5.Font;
 
 let obstacles: Obstacle[] = [];
 let raspberry: Raspberry;
-let paused: boolean;
+let startTime: number;
+let playTime: number;
 let score: number = 0;
+let paused: boolean;
 let hasAlreadyScored: boolean = false;
-let hasDied: boolean = false;
+let hasDied: boolean = true;
 let ready: boolean = true;
 
 /**
@@ -45,16 +47,17 @@ function setup() {
 /**
  * Sets up the constants needed for the game.
  */
-function setupObstacleConsts() {
+function setupObstacleConsts(): void {
     obstacleOffset = width / OBSTACLE_COUNT;
-    Obstacle.distanceBetweenPipes = height / 2.5
+    obstacleWidth = width / 22.727272727272727272;
+    Obstacle.distanceBetweenPipes = height / 2.5;
     Obstacle.startX = width;
 }
 
 /**
  * Set up the font.
  */
-function setupFont() {
+function setupFont(): void {
     textSize(150);
     textAlign(CENTER);
     textFont(font);
@@ -63,7 +66,7 @@ function setupFont() {
 /**
  * Sets up everything needed for the game.
  */
-function setupGame() {
+function setupGame(): void {
     paused = true;
     raspberry = new Raspberry(RASPBERRY_IMAGE_PATH);
     setupObstacles();
@@ -72,7 +75,7 @@ function setupGame() {
 /**
  * Clears the obstacles and reinitializes them.
  */
-function setupObstacles() {
+function setupObstacles(): void {
     obstacles = [];
     instantiateObstacles(OBSTACLE_COUNT);
     obstacles.forEach((obstacle) => obstacle.randomizeHeight());
@@ -82,10 +85,10 @@ function setupObstacles() {
  * Instantiates a certain amount of obstacles.
  * @param number
  */
-function instantiateObstacles(number: number) {
+function instantiateObstacles(number: number): void {
     for (let i = 0; i < number; i++) {
         obstacles.push(
-            new Obstacle(new Position(width + obstacleOffset * i, 0), OBSTACLE_WIDTH, height, pipeImage)
+            new Obstacle(new Position(width + obstacleOffset * i, 0), obstacleWidth, height, pipeImage)
         );
     }
 }
@@ -102,7 +105,7 @@ function draw() {
 /**
  * Draws the game's elements.
  */
-function drawGame() {
+function drawGame(): void {
     drawScenery();
     drawEntities();
     displayScore();
@@ -113,15 +116,15 @@ function drawGame() {
  * - background
  * - floor
  */
-function drawScenery(){
-   background(backgroundImage);
-   drawFloor();
+function drawScenery(): void {
+    background(backgroundImage);
+    drawFloor();
 }
 
 /**
  * Draws the floor with the corresponding image
  */
-function drawFloor(){
+function drawFloor(): void {
     push();
     noFill();
     image(floorImage, 0, height - floorHeight, width, floorHeight);
@@ -132,7 +135,7 @@ function drawFloor(){
 /**
  * Draws the game's entities.
  */
-function drawEntities() {
+function drawEntities(): void {
     raspberry.draw();
     drawObstacles();
 }
@@ -140,7 +143,7 @@ function drawEntities() {
 /**
  * Draws the obstacles.
  */
-function drawObstacles() {
+function drawObstacles(): void {
     obstacles.forEach((obstacle) => {
         obstacle.draw();
     });
@@ -149,7 +152,7 @@ function drawObstacles() {
 /**
  * Operations for the game's functionality.
  */
-function gameLoop() {
+function gameLoop(): void {
     if (!paused) {
         collisionCheck(obstacles[0]);
         checkRaspberryScore();
@@ -160,7 +163,7 @@ function gameLoop() {
  * Checks the collision between an obstacle and the raspberry.
  * @param o
  */
-function collisionCheck(o: Obstacle) {
+function collisionCheck(o: Obstacle): void {
     if (o.collides(raspberry)) {
         die();
         setupGame();
@@ -170,16 +173,27 @@ function collisionCheck(o: Obstacle) {
 /**
  * Timeouts key events.
  */
-function die() {
+function die(): void {
     ready = false;
     hasDied = true;
+    playTime = Date.now() - startTime;
+    exportToLocalStorage();
     setTimeout(() => ready = true, 1000);
+}
+
+/**
+ * Exports playTime, Score and if the game is running into localStorage
+ */
+function exportToLocalStorage(){
+    localStorage.setItem("game-playTime", String(playTime));
+    localStorage.setItem("game-score", String(score));
+    localStorage.setItem("game-isRunning", String(!hasDied));
 }
 
 /**
  * Displays the game score.
  */
-function displayScore() {
+function displayScore(): void {
     push();
     fill(195, 33, 34);
     text(score, 0, height / 10, width, height);
@@ -189,7 +203,7 @@ function displayScore() {
 /**
  * Updates all objects.
  */
-function update() {
+function update(): void {
     if (!paused) {
         raspberry.update();
     }
@@ -206,8 +220,8 @@ function update() {
  * Check if obstacle positions should be reset and reset if so
  * @param obstacle obstacle to check
  */
-function checkObstacleReset(obstacle: Obstacle) {
-    if (obstacle.position.x < -OBSTACLE_WIDTH) {
+function checkObstacleReset(obstacle: Obstacle): void {
+    if (obstacle.position.x < -obstacleWidth) {
         obstacle.resetPosition();
         obstacles.shift();
         obstacles.push(obstacle);
@@ -218,7 +232,7 @@ function checkObstacleReset(obstacle: Obstacle) {
 /**
  * Check if the raspberry should score and set score
  */
-function checkRaspberryScore() {
+function checkRaspberryScore(): void {
     if ((obstacles[0].position.x + obstacles[0].width / 2) < (raspberry.position.x + raspberry.width / 2)
         && !hasAlreadyScored) {
         score += 1;
@@ -234,6 +248,8 @@ function resetScore(): void {
         hasDied = false;
         score = 0;
         hasAlreadyScored = false;
+        startTime = Date.now();
+        exportToLocalStorage();
     }
 }
 

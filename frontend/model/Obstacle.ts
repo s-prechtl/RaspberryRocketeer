@@ -4,7 +4,7 @@
 class Obstacle extends Entity implements Collidable {
     private pipeTop: Pipe;
     private pipeBottom: Pipe;
-    private readonly padding: number = 150;
+    private readonly padding: number;
     private readonly speed: number = 3;
 
     private static _distanceBetweenPipes: number;
@@ -27,6 +27,7 @@ class Obstacle extends Entity implements Collidable {
      */
     constructor(position: Position, obstacleWidth: number, obstacleHeight: number, image: p5.Image) {
         super(position, obstacleWidth, obstacleHeight, 0);
+        this.padding = height / 6.6666666666666666;
         this.createPipes(position, obstacleHeight, obstacleWidth, image);
     }
 

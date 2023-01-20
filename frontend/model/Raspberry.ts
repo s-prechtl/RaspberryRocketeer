@@ -6,13 +6,13 @@ class Raspberry extends Entity {
      * Amount of lift applied when boosting.
      * @private
      */
-    private readonly lift: number = -20;
+    private readonly lift: number = -15;
 
     /**
      * Gravity applied.
      * @private
      */
-    private readonly gravity: number = 1.314159265358979323846264338;
+    private readonly gravity: number = 0.45;
 
     /**
      * Current speed.
@@ -36,31 +36,31 @@ class Raspberry extends Entity {
      * Maximum velocity, so the raspberry doesn't get to infinite speed when boosting.
      * @private
      */
-    private static readonly maxVelocity: number = 100;
+    private static readonly maxVelocity: number = 75;
 
     /**
      * Width.
      * @private
      */
-    private static readonly WIDTH: number = 180;
+    private static width: number;
 
     /**
      * Height.
      * @private
      */
-    private static readonly HEIGHT: number = 70;
+    private static height: number;
+
+    /**
+     * Offset off of the floor so that the raspberry looks like it's falling on the floor
+     * @private
+     */
+    private static bottomFloorOffset: number;
 
     /**
      * Color.
      * @private
      */
     private static readonly FILL: number = 0;
-
-    /**
-     * Offset off of the floor so that the raspberry looks like it's falling on the floor
-     * @private
-     */
-    private static BOTTOM_FLOOR_OFFSET: number;
 
     //region Getter & Setter
 
@@ -102,8 +102,11 @@ class Raspberry extends Entity {
      */
     constructor(image: string) {
         Raspberry.position = new Position(width / 6, height / 2);
-        super(Raspberry.position, Raspberry.WIDTH, Raspberry.HEIGHT, Raspberry.FILL);
-        Raspberry.BOTTOM_FLOOR_OFFSET = (height / 5) - (height / 15 / 2);
+        Raspberry.height = height / 14.2857142857142857;
+        Raspberry.width = width / 11.1111111111111111;
+       
+        super(Raspberry.position, Raspberry.width, Raspberry.height, Raspberry.FILL);
+        Raspberry.bottomFloorOffset = (height / 5) - (height / 15 / 2);
         this.image = image;
     }
 
@@ -148,8 +151,8 @@ class Raspberry extends Entity {
      * @private
      */
     private boundaryBottom(): void {
-        if (this.position.y + this.height + Raspberry.BOTTOM_FLOOR_OFFSET > height) {
-            this.position.y = height - this.height - Raspberry.BOTTOM_FLOOR_OFFSET;
+        if (this.position.y + this.height + Raspberry.bottomFloorOffset > height) {
+            this.position.y = height - this.height - Raspberry.bottomFloorOffset;
             this.velocity = 0;
         }
     }
