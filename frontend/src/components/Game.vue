@@ -1,7 +1,7 @@
 <template>
-    <div class="wrapper">
-        <main></main>
-    </div>
+  <div>
+  <main></main>
+  </div>
 </template>
 
 <script lang="ts">

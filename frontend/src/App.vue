@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container everything">
     <div class="row">
       <Header></Header>
     </div>
@@ -11,11 +11,11 @@
       </Game>
     </div>
     <div class="row">
-      <div class="col">
-        <Leaderboard :title="'Highscore'" :data="higscoreLeaderboard"></Leaderboard>
+      <div class="col-4">
+        <Leaderboard :title="'Highscore'" :leaderboard="this.highscoreLeaderboard"></Leaderboard>
       </div>
-      <div class="col">
-        <Leaderboard :title="'Total Playtime'" :data="totalPlaytimeLeaderboard"></Leaderboard>
+      <div class="offset-4 col-4">
+        <Leaderboard :title="'Total Playtime'" :leaderboard="this.totalPlaytimeLeaderboard"></Leaderboard>
       </div>
     </div>
   </div>
@@ -42,7 +42,7 @@ export default defineComponent({
   data() {
     return {
       userScores: {},
-      higscoreLeaderboard: [],
+      highscoreLeaderboard: [],
       totalPlaytimeLeaderboard: [],
       userId: 1,
     }
@@ -61,8 +61,9 @@ export default defineComponent({
   },
   async created() {
     this.userScores = await this.fetchUserScores();
-    this.higscoreLeaderboard = await this.fetchLeaderboard("highscore")
+    this.highscoreLeaderboard = await this.fetchLeaderboard("highscore")
     this.totalPlaytimeLeaderboard = await this.fetchLeaderboard("totalplaytime")
+    console.log(this)
   }
 });
 </script>
@@ -78,4 +79,7 @@ export default defineComponent({
   margin-top:2em;
 }
 
+.everything {
+  margin-bottom: 4em;
+}
 </style>
