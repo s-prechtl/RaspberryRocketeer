@@ -25,8 +25,10 @@ export default {
   emits: ['userChange'],
   methods: {
     async setUser() {
-      let user = await User.getByName(this.username);
-      if (user.errors) {
+      let user;
+      try {
+        user = await User.getByName(this.username);
+      } catch (e) {
         user = await User.create(this.username);
       }
 

@@ -43,7 +43,7 @@ function preload() {
     floorImage = loadImage(FLOOR_IMAGE_PATH);
 }
 function setup() {
-    createCanvas(2000, 1000);
+    createCanvas(1085, 600);
     floorHeight = height / 5;
     setupObstacleConsts();
     setupFont();

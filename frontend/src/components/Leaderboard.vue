@@ -40,9 +40,6 @@ export default {
   created() {
     this.updatePage();
   },
-  updated() {
-    this.updatePage()
-  },
   methods: {
     async fetchPage() {
       let res = await fetch(`${Rest.URL}/leaderboard/${this.type}?pagination=true&entriesPerPage=${this.entriesPerPage}&page=${this.pageNumber}`, {method: "GET"});

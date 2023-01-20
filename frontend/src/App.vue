@@ -7,10 +7,10 @@
       <UserScores :userScores="userScores"></UserScores>
     </div>
     <div class="row">
-      <Game v-if="user" v-bind:user-id=this.userId class="col"
+      <Game :class="user ? '' : 'hidden'" v-bind:user-id=this.userId class="col"
             @gameFinished="this.updateUserScores()">
       </Game>
-      <Login v-else @userChange="(event) => {this.user = event; this.userId = this.user.id}">
+      <Login v-if="!user" @userChange="(event) => {this.user = event; this.userId = this.user.id}">
       </Login>
     </div>
     <div class="row">
@@ -52,8 +52,6 @@ export default defineComponent({
       user: null,
     }
   },
-
-
   methods: {
     async fetchFromApi(path: string, method: "GET" | "POST") {
       let res: Response = await fetch(Rest.URL + path, {method: method,});
@@ -85,5 +83,8 @@ export default defineComponent({
 
 .everything {
   margin-bottom: 4em;
+}
+.hidden {
+  visibility: hidden;
 }
 </style>
