@@ -3,15 +3,19 @@
   <div class="form-floating mb-3">
     <input type="email" class="form-control" id="floatingInput" placeholder="example name" v-model="username">
     <label for="floatingInput">Username</label>
+    <RRButton @click="setUser()" text="Confirm"></RRButton>
   </div>
-  <button type="button" class="btn btn-primary" @click="setUser()">Confirm</button>
 </template>
 
 <script>
 import {User} from "@/model/User";
+import RRButton from "@/components/RRButton.vue";
 
 export default {
   name: "Login",
+  components: {
+    RRButton
+  },
   data() {
     return {
       username: '',
@@ -41,5 +45,8 @@ export default {
 </script>
 
 <style scoped>
-
+input {
+  border: 3px solid black;
+  background-color: beige;
+}
 </style>

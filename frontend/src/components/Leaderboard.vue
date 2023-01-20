@@ -3,10 +3,10 @@
     <div class="row">
       <h3 class="col-10"><strong>{{ this.title() }}</strong></h3>
       <div class="col-1">
-        <Button @click="prevPage" text="<"></Button>
+        <RRButton @click="prevPage" text="<"></RRButton>
       </div>
       <div class="col-1">
-        <Button @click="nextPage" text=">"></Button>
+        <RRButton @click="nextPage" text=">"></RRButton>
       </div>
     </div>
     <div class="row" v-for="entry in this.page" :key="entry.rank" >
@@ -18,13 +18,13 @@
 <script>
 
 import LeaderboardEntry from "@/components/LeaderboardEntry.vue";
-import Button from "@/components/Button.vue";
+import RRButton from "@/components/RRButton.vue";
 
 export default {
   name: "Leaderboard",
   components: {
     LeaderboardEntry,
-    Button,
+    RRButton,
   },
   data() {
     return {

@@ -4,7 +4,7 @@
 
 <script lang="ts">
 export default {
-  name: "Button",
+  name: "RRButton",
   props: {
     text: {
       type: String
@@ -17,5 +17,6 @@ export default {
 button {
   border: 3px solid black;
   background-color: beige;
+  width: auto;
 }
 </style>
