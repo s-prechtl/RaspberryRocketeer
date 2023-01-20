@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <h3 class="col-10"><strong>{{ title }}</strong></h3>
+      <h3 class="col-10"><strong>{{ this.title() }}</strong></h3>
       <div class="col-1">
         <Button @click="prevPage" text="<"></Button>
       </div>
@@ -9,7 +9,7 @@
         <Button @click="nextPage" text=">"></Button>
       </div>
     </div>
-    <div class="row" v-for="entry in page" :key="entry.rank" >
+    <div class="row" v-for="entry in this.page" :key="entry.rank" >
       <LeaderboardEntry :entry="entry" ></LeaderboardEntry>
     </div>
   </div>
@@ -29,29 +29,37 @@ export default {
   data() {
     return {
       pageNumber: 0,
-      entriesPerPage: 3,
-      page: [],
+      entriesPerPage: 5,
+      page: []
     }
   },
   props: {
-      title: String,
-      leaderboard: Array,
+      type: "totalplaytime" | "highscore",
+  },
+  created() {
+    this.updatePage();
   },
   updated() {
     this.updatePage()
-    console.log(this.leaderboard)
   },
   methods: {
+    async fetchPage() {
+      let res = await fetch(`http://localhost:3000/leaderboard/${this.type}?pagination=true&entriesPerPage=${this.entriesPerPage}&page=${this.pageNumber}`, {method: "GET"});
+      return await res.json();
+    },
+    title() {
+      return this.type === "totalplaytime" ? "Total Playtime" : "Highscore";
+    },
     nextPage() {
-      if (this.pageNumber < (this.leaderboard.length / this.entriesPerPage) - 1) this.pageNumber++;
+      this.pageNumber++;
       this.updatePage();
     },
     prevPage() {
       if (this.pageNumber > 0) this.pageNumber--;
       this.updatePage();
     },
-    updatePage() {
-      let tempPage = this.leaderboard.slice(this.entriesPerPage * this.pageNumber, this.entriesPerPage * (this.pageNumber + 1));
+    async updatePage() {
+      let tempPage = await this.fetchPage();
       for (let i = 0; i < this.entriesPerPage; i++) {
         this.page.pop()
       }

@@ -12,10 +12,10 @@
     </div>
     <div class="row">
       <div class="col-4">
-        <Leaderboard :title="'Highscore'" :leaderboard="this.highscoreLeaderboard"></Leaderboard>
+        <Leaderboard type="highscore"></Leaderboard>
       </div>
       <div class="offset-4 col-4">
-        <Leaderboard :title="'Total Playtime'" :leaderboard="this.totalPlaytimeLeaderboard"></Leaderboard>
+        <Leaderboard type="totalplaytime"></Leaderboard>
       </div>
     </div>
   </div>
@@ -55,15 +55,9 @@ export default defineComponent({
     async fetchUserScores() {
       return await this.fetchFromApi(`/user/${this.userId}/scores`, "GET");
     },
-    async fetchLeaderboard(type: "highscore" | "totalplaytime") {
-      return await this.fetchFromApi(`/leaderboard/${type}`, "GET");
-    },
   },
   async created() {
     this.userScores = await this.fetchUserScores();
-    this.highscoreLeaderboard = await this.fetchLeaderboard("highscore")
-    this.totalPlaytimeLeaderboard = await this.fetchLeaderboard("totalplaytime")
-    console.log(this)
   }
 });
 </script>
