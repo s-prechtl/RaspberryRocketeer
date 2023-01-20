@@ -9,6 +9,9 @@ export const gameRoute = express.Router()
 
 gameRoute.use(express.json())
 
+/**
+ * Test
+ */
 gameRoute.post(
     '/add',
     body('playtime')
@@ -18,6 +21,8 @@ gameRoute.post(
     body('userId')
         .isInt({min: 1})
         .custom(userWithIdExists),
+    body('score')
+        .isInt({min: 0}),
     /**
      * After processing the errors of express-validator, inserts the game into the DB
      * @param req

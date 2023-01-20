@@ -4,12 +4,13 @@
       <Header></Header>
     </div>
     <div class="row">
-      <UserScores :userScores="userScores" ></UserScores>
+      <UserScores :userScores="userScores"></UserScores>
     </div>
     <div class="row">
-      <Game v-if="user" class="col">
+      <Game v-if="user" v-bind:user-id=this.userId class="col"
+            @gameFinished="this.updateUserScores()">
       </Game>
-      <Login v-else @userChange="(event) => this.user = event">
+      <Login v-else @userChange="(event) => {this.user = event; this.userId = this.user.id}">
       </Login>
     </div>
     <div class="row">
@@ -24,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 import Leaderboard from './components/Leaderboard.vue';
 import UserScores from './components/UserScores.vue';
 import Game from './components/Game.vue';
@@ -33,7 +34,6 @@ import Header from './components/Header.vue';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import Login from "@/components/Login.vue";
-import {User} from "@/model/User";
 
 export default defineComponent({
   name: 'App',
@@ -49,19 +49,25 @@ export default defineComponent({
       userScores: {},
       userId: 1,
       user: null,
+      restUrl:'http://localhost:3000',
     }
   },
+
+
   methods: {
     async fetchFromApi(path: string, method: "GET" | "POST") {
-    let res: Response = await fetch("http://localhost:3000" + path, {method: method,});
-    return await res.json();
+      let res: Response = await fetch(this.restUrl + path, {method: method,});
+      return await res.json();
     },
     async fetchUserScores() {
       return await this.fetchFromApi(`/user/${this.userId}/scores`, "GET");
     },
+    async updateUserScores() {
+      this.userScores = await this.fetchUserScores();
+    },
   },
   async created() {
-    this.userScores = await this.fetchUserScores();
+    await this.updateUserScores();
   }
 });
 </script>
@@ -74,7 +80,7 @@ export default defineComponent({
 }
 
 .row {
-  margin-top:2em;
+  margin-top: 2em;
 }
 
 .everything {

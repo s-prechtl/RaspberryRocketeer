@@ -19,6 +19,7 @@
 
 import LeaderboardEntry from "@/components/LeaderboardEntry.vue";
 import RRButton from "@/components/RRButton.vue";
+import App from "@/App.vue";
 
 export default {
   name: "Leaderboard",
@@ -44,7 +45,7 @@ export default {
   },
   methods: {
     async fetchPage() {
-      let res = await fetch(`http://localhost:3000/leaderboard/${this.type}?pagination=true&entriesPerPage=${this.entriesPerPage}&page=${this.pageNumber}`, {method: "GET"});
+      let res = await fetch(`${App.data().restUrl}/leaderboard/${this.type}?pagination=true&entriesPerPage=${this.entriesPerPage}&page=${this.pageNumber}`, {method: "GET"});
       return await res.json();
     },
     title() {
