@@ -5,7 +5,15 @@ import {Database} from "../../Database.js";
 export class HighscoreLeaderboardPgPromiseRepository extends HighscoreLeaderboardRepository {
     async getAll(): Promise<HighscoreLeaderboard> {
         const raw: any = await Database.db.manyOrNone(
-            'SELECT * FROM lb_highscore INNER JOIN "user" ON user_id = id ORDER BY RANK;'
+            'SELECT * FROM lb_highscore INNER JOIN "user" ON user_id = id ORDER BY rank;'
+        );
+        return this.serialize(raw);
+    }
+
+    async getPage(entriesPerPage, page): Promise<HighscoreLeaderboard> {
+        const raw: any = await Database.db.manyOrNone(
+            'SELECT * FROM lb_highscore INNER JOIN "user" ON user_id = id ORDER BY rank LIMIT $1 OFFSET $2;',
+            [entriesPerPage, page * entriesPerPage]
         );
         return this.serialize(raw);
     }
