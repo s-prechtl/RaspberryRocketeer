@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container everything">
     <div class="row">
       <Header></Header>
     </div>
@@ -13,11 +13,11 @@
       </Login>
     </div>
     <div class="row">
-      <div class="col">
-        <Leaderboard :title="'Highscore'" :data="higscoreLeaderboard"></Leaderboard>
+      <div class="col-4">
+        <Leaderboard type="highscore"></Leaderboard>
       </div>
-      <div class="col">
-        <Leaderboard :title="'Total Playtime'" :data="totalPlaytimeLeaderboard"></Leaderboard>
+      <div class="offset-4 col-4">
+        <Leaderboard type="totalplaytime"></Leaderboard>
       </div>
     </div>
   </div>
@@ -47,8 +47,6 @@ export default defineComponent({
   data() {
     return {
       userScores: {},
-      higscoreLeaderboard: [],
-      totalPlaytimeLeaderboard: [],
       userId: 1,
       user: null,
     }
@@ -61,14 +59,9 @@ export default defineComponent({
     async fetchUserScores() {
       return await this.fetchFromApi(`/user/${this.userId}/scores`, "GET");
     },
-    async fetchLeaderboard(type: "highscore" | "totalplaytime") {
-      return await this.fetchFromApi(`/leaderboard/${type}`, "GET");
-    },
   },
   async created() {
     this.userScores = await this.fetchUserScores();
-    this.higscoreLeaderboard = await this.fetchLeaderboard("highscore")
-    this.totalPlaytimeLeaderboard = await this.fetchLeaderboard("totalplaytime")
   }
 });
 </script>
@@ -84,4 +77,7 @@ export default defineComponent({
   margin-top:2em;
 }
 
+.everything {
+  margin-bottom: 4em;
+}
 </style>

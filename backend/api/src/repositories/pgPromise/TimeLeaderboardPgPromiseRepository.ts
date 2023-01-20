@@ -5,7 +5,15 @@ import {Database} from "../../Database.js";
 export class TimeLeaderboardPgPromiseRepository extends TimeLeaderboardRepository {
     async getAll(): Promise<TimeLeaderboard> {
         const raw: any = await Database.db.manyOrNone(
-            'SELECT * FROM lb_total_playtime INNER JOIN "user" ON user_id = id ORDER BY RANK;'
+            'SELECT * FROM lb_total_playtime INNER JOIN "user" ON user_id = id ORDER BY rank;'
+        );
+        return this.serialize(raw);
+    }
+
+    async getPage(entriesPerPage: number, page: number): Promise<TimeLeaderboard> {
+        const raw: any = await Database.db.manyOrNone(
+            'SELECT * FROM lb_total_playtime INNER JOIN "user" ON user_id = id ORDER BY rank LIMIT $1 OFFSET $2;',
+            [entriesPerPage, page * entriesPerPage]
         );
         return this.serialize(raw);
     }

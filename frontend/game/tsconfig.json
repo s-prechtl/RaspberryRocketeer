@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "noImplicitAny": true,
-    "outFile": "../public/game/build.js",
+    "outFile": "../public/game.js",
     "preserveConstEnums": true,
     "removeComments": true,
     "rootDir": ".",

@@ -1,4 +1,5 @@
 import express from 'express';
+import {query, validationResult} from 'express-validator';
 import {TimeLeaderboardRepository} from "./repositories/TimeLeaderboardRepository.js";
 import {TimeLeaderboardPgPromiseRepository} from "./repositories/pgPromise/TimeLeaderboardPgPromiseRepository.js";
 import {HighscoreLeaderboardPgPromiseRepository} from "./repositories/pgPromise/HighscoreLeaderboardPgPromiseRepository.js";
@@ -8,6 +9,9 @@ import {HighscoreLeaderboard, TimeLeaderboard} from "./model/Leaderboard.js";
 export const leaderboardRoute = express.Router()
 
 leaderboardRoute.get('/highscore',
+    query('pagination').toBoolean(),
+    query('entriesPerPage').optional().isInt({min: 1}).toInt(),
+    query('page').optional().isInt({min: 0}).toInt(),
     /**
      * Returns the highscore leaderboard as JSON response, fetched from DB
      * @param req
@@ -15,8 +19,21 @@ leaderboardRoute.get('/highscore',
      */
     async (req, res) => {
     try {
+        //region validate parameters
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        //endregion
         const highscoreLeaderboardRepo: HighscoreLeaderboardRepository = new HighscoreLeaderboardPgPromiseRepository;
-        const highscoreLeaderboard: HighscoreLeaderboard = await highscoreLeaderboardRepo.getAll();
+        let highscoreLeaderboard: HighscoreLeaderboard;
+        if (req.query.pagination) {
+            const entriesPerPage = req.query.entriesPerPage;
+            const page = req.query.page;
+            highscoreLeaderboard = await highscoreLeaderboardRepo.getPage(entriesPerPage, page);
+        } else {
+            highscoreLeaderboard = await highscoreLeaderboardRepo.getAll();
+        }
         res.send(highscoreLeaderboard);
     } catch (error) {
         // handle errors
@@ -26,6 +43,9 @@ leaderboardRoute.get('/highscore',
 })
 
 leaderboardRoute.get('/totalplaytime',
+    query('pagination').toBoolean(),
+    query('entriesPerPage').optional().isInt({min: 1}).toInt(),
+    query('page').optional().isInt({min: 0}).toInt(),
     /**
      * Returns the total playtime leaderboard as JSON response, fetched from DB
      * @param req
@@ -33,8 +53,21 @@ leaderboardRoute.get('/totalplaytime',
      */
     async (req, res) => {
     try {
+        //region validate parameters
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        //endregion
         const timeLeaderboardRepo: TimeLeaderboardRepository = new TimeLeaderboardPgPromiseRepository;
-        const timeLeaderboard: TimeLeaderboard = await timeLeaderboardRepo.getAll();
+        let timeLeaderboard: TimeLeaderboard;
+        if (req.query.pagination) {
+            const entriesPerPage = req.query.entriesPerPage;
+            const page = req.query.page;
+            timeLeaderboard = await timeLeaderboardRepo.getPage(entriesPerPage, page);
+        } else {
+            timeLeaderboard = await timeLeaderboardRepo.getAll();
+        }
         res.send(timeLeaderboard);
     } catch (error) {
         // handle errors
