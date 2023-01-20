@@ -18,15 +18,15 @@ var BACKGROUND_IMAGE_PATH = "resources/htl-steyr-front.jpg";
 var RASPBERRY_IMAGE_PATH = "resources/raspberry-rocket.png";
 var FLOOR_IMAGE_PATH = "resources/table-min-min.png";
 var FONT_PATH = "resources/PressStart2P-Regular.ttf";
-var OBSTACLE_WIDTH = 88;
 var OBSTACLE_COUNT = 3;
 var BOOST_KEYS = ["k", " "];
 var floorHeight;
+var obstacleWidth;
 var obstacleOffset;
-var font;
 var backgroundImage;
 var pipeImage;
 var floorImage;
+var font;
 var obstacles = [];
 var raspberry;
 var startTime;
@@ -51,6 +51,7 @@ function setup() {
 }
 function setupObstacleConsts() {
     obstacleOffset = width / OBSTACLE_COUNT;
+    obstacleWidth = width / 22.727272727272727272;
     Obstacle.distanceBetweenPipes = height / 2.5;
     Obstacle.startX = width;
 }
@@ -71,7 +72,7 @@ function setupObstacles() {
 }
 function instantiateObstacles(number) {
     for (var i = 0; i < number; i++) {
-        obstacles.push(new Obstacle(new Position(width + obstacleOffset * i, 0), OBSTACLE_WIDTH, height, pipeImage));
+        obstacles.push(new Obstacle(new Position(width + obstacleOffset * i, 0), obstacleWidth, height, pipeImage));
     }
 }
 function draw() {
@@ -146,7 +147,7 @@ function update() {
     });
 }
 function checkObstacleReset(obstacle) {
-    if (obstacle.position.x < -OBSTACLE_WIDTH) {
+    if (obstacle.position.x < -obstacleWidth) {
         obstacle.resetPosition();
         obstacles.shift();
         obstacles.push(obstacle);
@@ -243,8 +244,8 @@ var Obstacle = (function (_super) {
     __extends(Obstacle, _super);
     function Obstacle(position, obstacleWidth, obstacleHeight, image) {
         var _this = _super.call(this, position, obstacleWidth, obstacleHeight, 0) || this;
-        _this.padding = 150;
         _this.speed = 3;
+        _this.padding = height / 6.6666666666666666;
         _this.createPipes(position, obstacleHeight, obstacleWidth, image);
         return _this;
     }
@@ -375,11 +376,13 @@ var Raspberry = (function (_super) {
     function Raspberry(image) {
         var _this = this;
         Raspberry.position = new Position(width / 6, height / 2);
-        _this = _super.call(this, Raspberry.position, Raspberry.WIDTH, Raspberry.HEIGHT, Raspberry.FILL) || this;
-        _this.lift = -20;
-        _this.gravity = 1.314159265358979323846264338;
+        Raspberry.height = height / 14.2857142857142857;
+        Raspberry.width = width / 11.1111111111111111;
+        _this = _super.call(this, Raspberry.position, Raspberry.width, Raspberry.height, Raspberry.FILL) || this;
+        _this.lift = -15;
+        _this.gravity = 0.45;
         _this._velocity = 0;
-        Raspberry.BOTTOM_FLOOR_OFFSET = (height / 5) - (height / 15 / 2);
+        Raspberry.bottomFloorOffset = (height / 5) - (height / 15 / 2);
         _this.image = image;
         return _this;
     }
@@ -422,8 +425,8 @@ var Raspberry = (function (_super) {
         }
     };
     Raspberry.prototype.boundaryBottom = function () {
-        if (this.position.y + this.height + Raspberry.BOTTOM_FLOOR_OFFSET > height) {
-            this.position.y = height - this.height - Raspberry.BOTTOM_FLOOR_OFFSET;
+        if (this.position.y + this.height + Raspberry.bottomFloorOffset > height) {
+            this.position.y = height - this.height - Raspberry.bottomFloorOffset;
             this.velocity = 0;
         }
     };
@@ -454,9 +457,7 @@ var Raspberry = (function (_super) {
         translate(this.position.x, this.position.y);
         rotate((PI / 2) * (this.velocity / Raspberry.maxVelocity));
     };
-    Raspberry.maxVelocity = 100;
-    Raspberry.WIDTH = 180;
-    Raspberry.HEIGHT = 70;
+    Raspberry.maxVelocity = 75;
     Raspberry.FILL = 0;
     return Raspberry;
 }(Entity));
