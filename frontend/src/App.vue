@@ -34,6 +34,7 @@ import Header from './components/Header.vue';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import Login from "@/components/Login.vue";
+import {Rest} from "@/model/Rest";
 
 export default defineComponent({
   name: 'App',
@@ -49,14 +50,13 @@ export default defineComponent({
       userScores: {},
       userId: 1,
       user: null,
-      restUrl:'http://localhost:3000',
     }
   },
 
 
   methods: {
     async fetchFromApi(path: string, method: "GET" | "POST") {
-      let res: Response = await fetch(this.restUrl + path, {method: method,});
+      let res: Response = await fetch(Rest.URL + path, {method: method,});
       return await res.json();
     },
     async fetchUserScores() {

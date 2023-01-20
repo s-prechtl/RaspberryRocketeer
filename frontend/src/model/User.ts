@@ -1,3 +1,5 @@
+import {Rest} from "@/model/Rest";
+
 export class User {
     id?: number;
     name?: string;
@@ -8,7 +10,7 @@ export class User {
     }
 
     static async getByName(name: string): Promise<User> {
-        let res: Response = await fetch('http://localhost:3000/user/' + name, {method: 'GET'});
+        let res: Response = await fetch(Rest.URL + '/user/' + name, {method: 'GET'});
 
         return await res.json();
     }
@@ -22,7 +24,7 @@ export class User {
             "Content-Type": "application/json",
         };
 
-        let res: Response = await fetch('http://localhost:3000/user/register', {
+        let res: Response = await fetch( Rest.URL + '/user/register', {
             method: 'POST',
             body: JSON.stringify(body),
             headers: header,
