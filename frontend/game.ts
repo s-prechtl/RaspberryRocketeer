@@ -42,6 +42,11 @@ function setup() {
     setupObstacleConsts();
     setupFont();
     setupGame();
+    let originalSetItem = localStorage.setItem;
+    localStorage.setItem = function(){
+        document.createEvent('Event').initEvent('itemInserted', true, true);
+        originalSetItem.apply(this, arguments);
+    }
 }
 
 /**
