@@ -8,9 +8,9 @@
     </div>
     <div class="row">
       <Game :class="user ? '' : 'hidden'" v-bind:user-id=this.userId class="col"
-            @gameFinished="this.updateUserScores()">
+            @gameFinished="this.updateUserScores()" ref="game">
       </Game>
-      <Login v-if="!user" @userChange="(event) => {this.updateUser(event)}">
+      <Login v-if="!user" @userChange="(event) => {this.updateUser(event);}">
       </Login>
     </div>
     <div class="row">

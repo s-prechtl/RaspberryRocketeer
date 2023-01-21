@@ -77,7 +77,7 @@ function setupObstacleConsts() {
 }
 
 function setupFont() {
-    textSize(150);
+    textSize(75);
     textAlign(CENTER);
     textFont(font);
 }
@@ -171,7 +171,7 @@ function exportToLocalStorage() {
 function displayScore() {
     push();
     fill(195, 33, 34);
-    text(score, 0, height / 10, width, height);
+    text(score, 0, height / 8, width, height);
     pop();
 }
 
