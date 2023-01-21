@@ -26,9 +26,8 @@ export default {
   methods: {
     async setUser() {
       let user;
-      try {
-        user = await User.getByName(this.username);
-      } catch (e) {
+      user = await User.getByName(this.username);
+      if (user.errors) {
         user = await User.create(this.username);
       }
 

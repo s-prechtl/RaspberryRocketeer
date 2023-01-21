@@ -10,7 +10,7 @@
       <Game :class="user ? '' : 'hidden'" v-bind:user-id=this.userId class="col"
             @gameFinished="this.updateUserScores()">
       </Game>
-      <Login v-if="!user" @userChange="(event) => {this.user = event; this.userId = this.user.id}">
+      <Login v-if="!user" @userChange="(event) => {this.updateUser(event)}">
       </Login>
     </div>
     <div class="row">
@@ -35,6 +35,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import Login from "@/components/Login.vue";
 import {Rest} from "@/model/Rest";
+import {User} from "@/model/User";
 
 export default defineComponent({
   name: 'App',
@@ -48,25 +49,32 @@ export default defineComponent({
   data() {
     return {
       userScores: {},
-      userId: 1,
-      user: null,
+      userId: -1,
+      user: null as User | null,
     }
   },
+
+
   methods: {
     async fetchFromApi(path: string, method: "GET" | "POST") {
       let res: Response = await fetch(Rest.URL + path, {method: method,});
       return await res.json();
     },
     async fetchUserScores() {
+      if (this.userId == -1) return;
       return await this.fetchFromApi(`/user/${this.userId}/scores`, "GET");
     },
     async updateUserScores() {
       this.userScores = await this.fetchUserScores();
     },
+    async updateUser(user: User) {
+      if (user) {
+        this.user = user;
+        this.userId = user.id ?? -1;
+        await this.updateUserScores();
+      }
+    }
   },
-  async created() {
-    await this.updateUserScores();
-  }
 });
 </script>
 
