@@ -9,8 +9,8 @@
         <RRButton @click="nextPage" text=">"></RRButton>
       </div>
     </div>
-    <div class="row" v-for="entry in this.page" :key="entry.rank" >
-      <LeaderboardEntry :entry="entry" ></LeaderboardEntry>
+    <div class="row" v-for="entry in this.page" :key="entry.rank">
+      <LeaderboardEntry :entry="entry"></LeaderboardEntry>
     </div>
   </div>
 </template>
@@ -35,11 +35,13 @@ export default {
     }
   },
   props: {
-      type: "totalplaytime" | "highscore",
+    type: "totalplaytime" | "highscore",
   },
   created() {
     this.updatePage();
-    window.addEventListener('reloadLeaderboard', () => {this.updatePage()}, false)
+    window.addEventListener('itemInserted', () => {
+      this.updatePage();
+    }, false)
   },
   methods: {
     async fetchPage() {

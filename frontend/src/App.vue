@@ -51,6 +51,7 @@ export default defineComponent({
       userScores: {},
       userId: -1,
       user: null as User | null,
+      leaderboardEvent: new Event('reloadLeaderboard')
     }
   },
 
@@ -73,8 +74,7 @@ export default defineComponent({
         this.userId = user.id ?? -1;
         await this.updateUserScores();
       }
-      let reloadEvent = new Event('reloadLeaderboard');
-      window.dispatchEvent(reloadEvent);
+      window.dispatchEvent(this.leaderboardEvent);
     }
   },
 });
