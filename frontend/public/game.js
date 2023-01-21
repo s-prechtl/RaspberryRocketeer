@@ -43,11 +43,16 @@ function preload() {
     floorImage = loadImage(FLOOR_IMAGE_PATH);
 }
 function setup() {
-    createCanvas(1085, 600);
+    createCanvas(2000, 1000);
     floorHeight = height / 5;
     setupObstacleConsts();
     setupFont();
     setupGame();
+    var originalSetItem = localStorage.setItem;
+    localStorage.setItem = function () {
+        document.createEvent('Event').initEvent('itemInserted', true, true);
+        originalSetItem.apply(this, arguments);
+    };
 }
 function setupObstacleConsts() {
     obstacleOffset = width / OBSTACLE_COUNT;
