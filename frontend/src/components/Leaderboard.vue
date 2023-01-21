@@ -63,7 +63,7 @@ export default {
     },
     async updatePage() {
       let tempPage = await this.fetchPage();
-      for (let i = 0; i < this.page.length; i++) {
+      for (let i = 0; i < this.entriesPerPage; i++) {
         this.page.pop()
       }
       for (const entry of tempPage) {
