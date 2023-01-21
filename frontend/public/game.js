@@ -1,15 +1,23 @@
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+            ({__proto__: []} instanceof Array && function (d, b) {
+                d.__proto__ = b;
+            }) ||
+            function (d, b) {
+                for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+            };
         return extendStatics(d, b);
     };
     return function (d, b) {
         if (typeof b !== "function" && b !== null)
             throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
-        function __() { this.constructor = d; }
+
+        function __() {
+            this.constructor = d;
+        }
+
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
@@ -36,64 +44,81 @@ var paused;
 var hasAlreadyScored = false;
 var hasDied = true;
 var ready = true;
+
 function preload() {
     font = loadFont(FONT_PATH);
     backgroundImage = loadImage(BACKGROUND_IMAGE_PATH);
     pipeImage = loadImage(PIPE_IMAGE_PATH);
     floorImage = loadImage(FLOOR_IMAGE_PATH);
 }
+
 function setup() {
-    createCanvas(2000, 1000);
+    createCanvas(1085, 600);
     floorHeight = height / 5;
     setupObstacleConsts();
     setupFont();
     setupGame();
     var originalSetItem = localStorage.setItem;
-    localStorage.setItem = function () {
-        document.createEvent('Event').initEvent('itemInserted', true, true);
+    localStorage.setItem = function (key, value) {
+        var event = new Event('itemInserted');
+
+        event.value = value; // Optional..
+        event.key = key; // Optional..
+        window.dispatchEvent(event);
         originalSetItem.apply(this, arguments);
     };
 }
+
 function setupObstacleConsts() {
     obstacleOffset = width / OBSTACLE_COUNT;
     obstacleWidth = width / 22.727272727272727272;
     Obstacle.distanceBetweenPipes = height / 2.5;
     Obstacle.startX = width;
 }
+
 function setupFont() {
     textSize(150);
     textAlign(CENTER);
     textFont(font);
 }
+
 function setupGame() {
     paused = true;
     raspberry = new Raspberry(RASPBERRY_IMAGE_PATH);
     setupObstacles();
 }
+
 function setupObstacles() {
     obstacles = [];
     instantiateObstacles(OBSTACLE_COUNT);
-    obstacles.forEach(function (obstacle) { return obstacle.randomizeHeight(); });
+    obstacles.forEach(function (obstacle) {
+        return obstacle.randomizeHeight();
+    });
 }
+
 function instantiateObstacles(number) {
     for (var i = 0; i < number; i++) {
         obstacles.push(new Obstacle(new Position(width + obstacleOffset * i, 0), obstacleWidth, height, pipeImage));
     }
 }
+
 function draw() {
     update();
     gameLoop();
     drawGame();
 }
+
 function drawGame() {
     drawScenery();
     drawEntities();
     displayScore();
 }
+
 function drawScenery() {
     background(backgroundImage);
     drawFloor();
 }
+
 function drawFloor() {
     push();
     noFill();
@@ -101,45 +126,55 @@ function drawFloor() {
     rect(0, height - floorHeight, width, floorHeight);
     pop();
 }
+
 function drawEntities() {
     raspberry.draw();
     drawObstacles();
 }
+
 function drawObstacles() {
     obstacles.forEach(function (obstacle) {
         obstacle.draw();
     });
 }
+
 function gameLoop() {
     if (!paused) {
         collisionCheck(obstacles[0]);
         checkRaspberryScore();
     }
 }
+
 function collisionCheck(o) {
     if (o.collides(raspberry)) {
         die();
         setupGame();
     }
 }
+
 function die() {
     ready = false;
     hasDied = true;
     playTime = Date.now() - startTime;
     exportToLocalStorage();
-    setTimeout(function () { return ready = true; }, 1000);
+    setTimeout(function () {
+        return ready = true;
+    }, 1000);
 }
+
 function exportToLocalStorage() {
     localStorage.setItem("game-playTime", String(playTime));
     localStorage.setItem("game-score", String(score));
     localStorage.setItem("game-isRunning", String(!hasDied));
 }
+
 function displayScore() {
     push();
     fill(195, 33, 34);
     text(score, 0, height / 10, width, height);
     pop();
 }
+
 function update() {
     if (!paused) {
         raspberry.update();
@@ -151,6 +186,7 @@ function update() {
         }
     });
 }
+
 function checkObstacleReset(obstacle) {
     if (obstacle.position.x < -obstacleWidth) {
         obstacle.resetPosition();
@@ -159,6 +195,7 @@ function checkObstacleReset(obstacle) {
         hasAlreadyScored = false;
     }
 }
+
 function checkRaspberryScore() {
     if ((obstacles[0].position.x + obstacles[0].width / 2) < (raspberry.position.x + raspberry.width / 2)
         && !hasAlreadyScored) {
@@ -166,6 +203,7 @@ function checkRaspberryScore() {
         hasAlreadyScored = true;
     }
 }
+
 function resetScore() {
     if (hasDied) {
         hasDied = false;
@@ -175,6 +213,7 @@ function resetScore() {
         exportToLocalStorage();
     }
 }
+
 function keyPressed() {
     if (!ready)
         return;
@@ -184,11 +223,11 @@ function keyPressed() {
     }
     if (key == "Escape") {
         paused = !paused;
-    }
-    else if (paused) {
+    } else if (paused) {
         paused = false;
     }
 }
+
 var Entity = (function () {
     function Entity(position, width, height, fill) {
         this.position = position;
@@ -197,6 +236,7 @@ var Entity = (function () {
         this.fill = fill;
         this._showHitbox = false;
     }
+
     Object.defineProperty(Entity.prototype, "position", {
         get: function () {
             return this._position;
@@ -247,6 +287,7 @@ var Entity = (function () {
 }());
 var Obstacle = (function (_super) {
     __extends(Obstacle, _super);
+
     function Obstacle(position, obstacleWidth, obstacleHeight, image) {
         var _this = _super.call(this, position, obstacleWidth, obstacleHeight, 0) || this;
         _this.speed = 3;
@@ -254,6 +295,7 @@ var Obstacle = (function (_super) {
         _this.createPipes(position, obstacleHeight, obstacleWidth, image);
         return _this;
     }
+
     Object.defineProperty(Obstacle, "startX", {
         set: function (value) {
             this._startX = value;
@@ -301,11 +343,13 @@ var Obstacle = (function (_super) {
 }(Entity));
 var Pipe = (function (_super) {
     __extends(Pipe, _super);
+
     function Pipe(positionX, width, height, image) {
         var _this = _super.call(this, new Position(positionX, 0), width, height, 0) || this;
         _this.image = image;
         return _this;
     }
+
     Pipe.prototype.update = function () {
     };
     Pipe.prototype.draw = function () {
@@ -327,8 +371,7 @@ var Pipe = (function (_super) {
                 }
                 image(this.image, this.position.x, this.position.y + imageYPosition, this.width, computedImageHeight);
             }
-        }
-        else {
+        } else {
             image(this.image, this.position.x, this.position.y, this.width, this.height);
         }
     };
@@ -354,6 +397,7 @@ var Position = (function () {
         this._x = x;
         this._y = y;
     }
+
     Object.defineProperty(Position.prototype, "x", {
         get: function () {
             return this._x;
@@ -378,6 +422,7 @@ var Position = (function () {
 }());
 var Raspberry = (function (_super) {
     __extends(Raspberry, _super);
+
     function Raspberry(image) {
         var _this = this;
         Raspberry.position = new Position(width / 6, height / 2);
@@ -391,6 +436,7 @@ var Raspberry = (function (_super) {
         _this.image = image;
         return _this;
     }
+
     Object.defineProperty(Raspberry.prototype, "velocity", {
         get: function () {
             return this._velocity;

@@ -6,6 +6,8 @@
 
 <script>
 import App from "@/App.vue";
+import {Rest} from "@/model/Rest";
+
 export default {
   name: "Game",
   props: {
@@ -13,12 +15,13 @@ export default {
   },
   emits: ['gameFinished'],
   created() {
-    window.addEventListener('storage', this.localStorageHandler, false);
+    window.addEventListener('itemInserted', event => this.localStorageHandler(event), false);
   },
   methods: {
+    localStorageHandler(event) {
+      if (event.key !== 'game-isRunning') return;
 
-    localStorageHandler() {
-      if (localStorage.getItem('game-isRunning') !== 'true') {
+      if (event.value === 'false') { //means game is over
         let playTime = this.msToHMS(Number(localStorage.getItem('game-playTime')));
         let score = Number(localStorage.getItem('game-score'));
         this.submitGame(score, playTime);
@@ -35,17 +38,17 @@ export default {
       const minutes = parseInt(String(seconds / 60)); // 60 seconds in 1 minute
       // 4- Keep only seconds not extracted to minutes:
       seconds = seconds % 60;
-      return hours + ":" + minutes + ":" + seconds;
+      return ((hours < 10) ? "0" : "") + hours + ":" + ((minutes < 10) ? "0" : "") + minutes + ":" + ((seconds < 10) ? "0" : "") + Math.floor(seconds);
     },
 
     async submitGame(score, playTime) {
       let body = {
         score: score,
         playtime: playTime,
-        date: new Date(),
+        date: new Date().toISOString(),
         userId: this.userId,
       }
-      await fetch(App.data().restUrl + '/game/add', {method: 'POST', body: JSON.stringify(body)});
+      await fetch(Rest.URL + '/game/add', {method: 'POST', body: JSON.stringify(body)});
       this.$emit('gameFinished');
     }
   },
