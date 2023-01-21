@@ -73,6 +73,8 @@ export default defineComponent({
         this.userId = user.id ?? -1;
         await this.updateUserScores();
       }
+      let reloadEvent = new Event('reloadLeaderboard');
+      window.dispatchEvent(reloadEvent);
     }
   },
 });

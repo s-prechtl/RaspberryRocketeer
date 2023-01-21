@@ -39,6 +39,7 @@ export default {
   },
   created() {
     this.updatePage();
+    window.addEventListener('reloadLeaderboard', () => {this.updatePage()}, false)
   },
   methods: {
     async fetchPage() {

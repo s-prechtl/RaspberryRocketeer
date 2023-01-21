@@ -45,10 +45,14 @@ export default {
       let body = {
         score: score,
         playtime: playTime,
-        date: new Date().toISOString(),
+        date: new Date().toISOString().substring(0, 10),
         userId: this.userId,
       }
-      await fetch(Rest.URL + '/game/add', {method: 'POST', body: JSON.stringify(body)});
+      let header = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+      await fetch(Rest.URL + '/game/add', {method: 'POST', body: JSON.stringify(body), headers: header});
       this.$emit('gameFinished');
     }
   },
