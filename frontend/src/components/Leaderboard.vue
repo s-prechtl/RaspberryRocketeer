@@ -39,8 +39,10 @@ export default {
   },
   created() {
     this.updatePage();
-    window.addEventListener('itemInserted', () => {
-      this.updatePage();
+    window.addEventListener('itemInserted', (event) => {
+      if (event.key === 'game-isRunning' && event.value === 'false'){
+        this.updatePage();
+      }
     }, false)
   },
   methods: {
