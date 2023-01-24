@@ -7,11 +7,14 @@
       <UserScores :userScores="userScores"></UserScores>
     </div>
     <div class="row">
-      <Game :class="user ? '' : 'hidden'" v-bind:user-id=this.userId class="col"
+      <Game :class="user ? '' : 'hidden'" :user-id="this.user?.id"
             @gameFinished="this.updateUserScores()" ref="game">
       </Game>
       <Login v-if="!user" @userChange="(event) => {this.updateUser(event);}">
       </Login>
+      <div v-if="user" class="logout-wrapper offset-10 col-2">
+        <RRButton @click="this.user = null; this.userId = -1;" text="Logout"></RRButton>
+      </div>
     </div>
     <div class="row">
       <div class="col-4">
@@ -36,10 +39,12 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import Login from "@/components/Login.vue";
 import {Rest} from "@/model/Rest";
 import {User} from "@/model/User";
+import RRButton from "@/components/RRButton.vue";
 
 export default defineComponent({
   name: 'App',
   components: {
+    RRButton,
     Login,
     UserScores,
     Leaderboard,
@@ -96,5 +101,9 @@ export default defineComponent({
 }
 .hidden {
   visibility: hidden;
+}
+.logout-wrapper {
+  display: flex;
+  justify-content: right;
 }
 </style>
