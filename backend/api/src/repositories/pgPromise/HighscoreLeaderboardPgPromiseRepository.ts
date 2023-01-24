@@ -12,7 +12,7 @@ export class HighscoreLeaderboardPgPromiseRepository extends HighscoreLeaderboar
 
     async getPage(entriesPerPage, page): Promise<HighscoreLeaderboard> {
         const raw: any = await Database.db.manyOrNone(
-            'SELECT * FROM lb_highscore INNER JOIN "user" ON user_id = id ORDER BY rank LIMIT $1 OFFSET $2*$1;',
+            'SELECT * FROM lb_highscore INNER JOIN "user" ON user_id = id ORDER BY rank LIMIT $1 OFFSET $2;',
             [entriesPerPage, page * entriesPerPage]
         );
         return this.serialize(raw);

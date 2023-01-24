@@ -12,7 +12,7 @@ export class TimeLeaderboardPgPromiseRepository extends TimeLeaderboardRepositor
 
     async getPage(entriesPerPage: number, page: number): Promise<TimeLeaderboard> {
         const raw: any = await Database.db.manyOrNone(
-            'SELECT * FROM lb_total_playtime INNER JOIN "user" ON user_id = id ORDER BY rank LIMIT $1 OFFSET $2*$1;',
+            'SELECT * FROM lb_total_playtime INNER JOIN "user" ON user_id = id ORDER BY rank LIMIT $1 OFFSET $2;',
             [entriesPerPage, page * entriesPerPage]
         );
         return this.serialize(raw);
