@@ -52,11 +52,11 @@ export default {
     title() {
       return this.type === "totalplaytime" ? "Total Playtime" : "Highscore";
     },
-    nextPage() {
+    async nextPage() {
       if (this.page.length !== this.entriesPerPage) return;
 
       this.pageNumber++;
-      this.updatePage();
+      await this.updatePage();
       if (this.page.length === 0) {
         this.prevPage();
       }
