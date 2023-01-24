@@ -9,8 +9,11 @@
         <RRButton @click="nextPage" text=">"></RRButton>
       </div>
     </div>
-    <div class="row" v-for="entry in this.page" :key="entry.rank">
+    <div class="row" v-if="this.page.length > 0" v-for="entry in this.page" :key="entry.rank">
       <LeaderboardEntry :entry="entry"></LeaderboardEntry>
+    </div>
+    <div class="row" v-else>
+      Loading...
     </div>
   </div>
 </template>
@@ -39,11 +42,7 @@ export default {
   },
   created() {
     this.updatePage();
-    window.addEventListener('itemInserted', (event) => {
-      if (event.key === 'game-isRunning' && event.value === 'false'){
-        this.updatePage();
-      }
-    }, false)
+    window.addEventListener('itemInserted', event => this.onItemInserted(event), false);
   },
   methods: {
     async fetchPage() {
@@ -54,20 +53,29 @@ export default {
       return this.type === "totalplaytime" ? "Total Playtime" : "Highscore";
     },
     nextPage() {
+      if (this.page.length !== this.entriesPerPage) return;
+
       this.pageNumber++;
       this.updatePage();
     },
     prevPage() {
-      if (this.pageNumber > 0) this.pageNumber--;
+      if (this.pageNumber <= 0) return;
+
+      this.pageNumber--;
       this.updatePage();
     },
     async updatePage() {
       let tempPage = await this.fetchPage();
       for (let i = 0; i < this.entriesPerPage; i++) {
-        this.page.pop()
+        this.page.pop();
       }
       for (const entry of tempPage) {
-        this.page.push(entry)
+        this.page.push(entry);
+      }
+    },
+    onItemInserted(event) {
+      if (event.key === 'game-isRunning' && event.value === 'false') {
+        this.updatePage();
       }
     }
   }
