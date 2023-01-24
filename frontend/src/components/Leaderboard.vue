@@ -57,6 +57,9 @@ export default {
 
       this.pageNumber++;
       this.updatePage();
+      if (this.page.length === 0) {
+        this.prevPage();
+      }
     },
     prevPage() {
       if (this.pageNumber <= 0) return;
