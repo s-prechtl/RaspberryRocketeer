@@ -27,7 +27,7 @@ leaderboardRoute.get('/highscore',
         //endregion
         const highscoreLeaderboardRepo: HighscoreLeaderboardRepository = new HighscoreLeaderboardPgPromiseRepository;
         let highscoreLeaderboard: HighscoreLeaderboard;
-        if (req.query.pagination) {
+        if (req.query.pagination == true) {
             const entriesPerPage = req.query.entriesPerPage;
             const page = req.query.page;
             highscoreLeaderboard = await highscoreLeaderboardRepo.getPage(entriesPerPage, page);
@@ -53,6 +53,7 @@ leaderboardRoute.get('/totalplaytime',
      */
     async (req, res) => {
     try {
+        console.log(req.query)
         //region validate parameters
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -61,7 +62,8 @@ leaderboardRoute.get('/totalplaytime',
         //endregion
         const timeLeaderboardRepo: TimeLeaderboardRepository = new TimeLeaderboardPgPromiseRepository;
         let timeLeaderboard: TimeLeaderboard;
-        if (req.query.pagination) {
+        console.log(req.query)
+        if (req.query.pagination == true) {
             const entriesPerPage = req.query.entriesPerPage;
             const page = req.query.page;
             timeLeaderboard = await timeLeaderboardRepo.getPage(entriesPerPage, page);
