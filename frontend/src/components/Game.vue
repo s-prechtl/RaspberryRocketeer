@@ -58,3 +58,9 @@ export default {
   },
 }
 </script>
+
+<style>
+#p5_loading {
+  display: none;
+}
+</style>
