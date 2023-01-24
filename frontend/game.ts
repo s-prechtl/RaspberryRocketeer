@@ -43,7 +43,7 @@ function setup() {
     setupFont();
     setupGame();
     let originalSetItem = localStorage.setItem;
-    localStorage.setItem = function(){
+    localStorage.setItem = function () {
         document.createEvent('Event').initEvent('itemInserted', true, true);
         originalSetItem.apply(this, arguments);
     }
@@ -189,7 +189,7 @@ function die(): void {
 /**
  * Exports playTime, Score and if the game is running into localStorage
  */
-function exportToLocalStorage(){
+function exportToLocalStorage() {
     localStorage.setItem("game-playTime", String(playTime));
     localStorage.setItem("game-score", String(score));
     localStorage.setItem("game-isRunning", String(!hasDied));
@@ -249,13 +249,13 @@ function checkRaspberryScore(): void {
  * Resets the score if game is started
  */
 function resetScore(): void {
-    if (hasDied) {
-        hasDied = false;
-        score = 0;
-        hasAlreadyScored = false;
-        startTime = Date.now();
-        exportToLocalStorage();
-    }
+    if (!hasDied || localStorage.getItem("frontend-ready") == "false") return;
+    
+    hasDied = false;
+    score = 0;
+    hasAlreadyScored = false;
+    startTime = Date.now();
+    exportToLocalStorage();
 }
 
 /**
