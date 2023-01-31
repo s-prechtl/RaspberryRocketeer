@@ -16,31 +16,34 @@ export default {
   components: {
     RRButton
   },
-  data() {
+  data(){
     return {
       username: '',
-      user: null,
+      _user: null,
     }
   },
   emits: ['userChange'],
   methods: {
-    async setUser() {
+    async setUser(){
       let user;
       user = await User.getByName(this.username);
-      if (user.errors) {
+      if(user.errors){
         user = await User.create(this.username);
       }
 
-      if (user.errors) {
+      if(user.errors){
         console.error("Something when wrong when logging in, please contact admin!")
-        return;
       }
 
-      if (user) {
-        this.user = user;
-        this.$emit('userChange', this.user);
+      if(user){
+        this.user(user);
       }
     },
+    user(user){
+      this._user = user;
+      localStorage.setItem("frontend-ready", "true");
+      this.$emit('userChange', this._user);
+    }
   }
 }
 </script>

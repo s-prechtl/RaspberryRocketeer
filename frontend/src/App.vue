@@ -13,7 +13,7 @@
       <Login v-if="!user" @userChange="(event) => {this.updateUser(event);}">
       </Login>
       <div v-if="user" class="logout-wrapper offset-10 col-2">
-        <RRButton @click="this.user = null; this.userId = -1;" text="Logout"></RRButton>
+        <RRButton @click="logOut()" text="Logout"></RRButton>
       </div>
     </div>
     <div class="row">
@@ -59,7 +59,9 @@ export default defineComponent({
       leaderboardEvent: new Event('reloadLeaderboard')
     }
   },
-
+  created() {
+    localStorage.setItem("frontend-ready", "false");
+  },
 
   methods: {
     async fetchFromApi(path: string, method: "GET" | "POST") {
@@ -80,6 +82,11 @@ export default defineComponent({
         await this.updateUserScores();
       }
       window.dispatchEvent(this.leaderboardEvent);
+    },
+    logOut(){
+      this.user = null;
+      this.userId = -1;
+      localStorage.setItem('frontend-ready', 'false');
     }
   },
 });
@@ -99,9 +106,11 @@ export default defineComponent({
 .everything {
   margin-bottom: 4em;
 }
+
 .hidden {
   visibility: hidden;
 }
+
 .logout-wrapper {
   display: flex;
   justify-content: right;
