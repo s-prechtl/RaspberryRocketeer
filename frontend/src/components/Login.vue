@@ -39,6 +39,7 @@ export default {
 
       if (user) {
         this.$emit('userChange', user);
+        localStorage.setItem("frontend-ready", "true");
       }
     },
   }

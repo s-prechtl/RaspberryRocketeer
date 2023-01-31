@@ -43,7 +43,7 @@ var score = 0;
 var paused;
 var hasAlreadyScored = false;
 var hasDied = true;
-var ready = true;
+var ready = false;
 
 function preload(){
     font = loadFont(FONT_PATH);
@@ -67,6 +67,12 @@ function setup(){
         window.dispatchEvent(event);
         originalSetItem.apply(this, arguments);
     };
+    window.addEventListener("itemInserted", e => {
+        if(e.key === "frontend-ready"){
+            ready = e.value === "true";
+            score = 0;
+        }
+    })
 }
 
 function setupObstacleConsts(){
@@ -155,13 +161,15 @@ function collisionCheck(o){
 function die(){
     if(localStorage.getItem("frontend-ready") == "false")
         return;
-    
+
     ready = false;
     hasDied = true;
     playTime = Date.now() - startTime;
     exportToLocalStorage();
     setTimeout(function(){
-        return ready = true;
+        if(localStorage.getItem("frontend-ready") == "true"){
+            return ready = true;
+        }
     }, 1000);
 }
 
@@ -208,19 +216,20 @@ function checkRaspberryScore(){
 }
 
 function resetScore(){
-    if(!hasDied || localStorage.getItem("frontend-ready") == "false") 
+    if(!hasDied)
         return;
 
     hasDied = false;
     score = 0;
     hasAlreadyScored = false;
     startTime = Date.now();
-    exportToLocalStorage();
 }
 
 function keyPressed(){
-    if(!ready)
+    if(!ready){
         return;
+    }
+
     if(BOOST_KEYS.includes(key.toLowerCase())){
         resetScore();
         raspberry.boost();
