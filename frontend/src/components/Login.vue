@@ -1,7 +1,7 @@
 <template>
   <h2>Enter a username</h2>
   <div class="form-floating mb-3">
-    <input type="email" class="form-control" id="floatingInput" placeholder="example name" v-model="username">
+    <input class="form-control" id="floatingInput" placeholder="example name" v-model="username">
     <label for="floatingInput">Username</label>
     <RRButton @click="setUser()" text="Confirm"></RRButton>
   </div>
