@@ -86,6 +86,7 @@ export default defineComponent({
     logOut(){
       this.user = null;
       this.userId = -1;
+      this.userScores = {};
       localStorage.setItem('frontend-ready', 'false');
     }
   },
