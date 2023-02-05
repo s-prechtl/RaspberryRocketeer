@@ -26,3 +26,5 @@ npm install
 ```shell
 docker compose up --build
 ```
+
+You can then access the website on `localhost:8080`
