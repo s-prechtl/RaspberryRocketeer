@@ -21,7 +21,7 @@ and run:
 npm install
 ```
 
-### Start the container
+### Start the container (in the project root)
 
 ```shell
 docker compose up --build
